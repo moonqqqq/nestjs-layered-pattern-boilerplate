@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                                String     @id @default(uuid())
+  loginId                           String     @unique
+  password                          String
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+}
+
+model File {
+  id           String @id @default(uuid())
+  name         String
+  originalName String
+  path         String
+  size         String
+  userId       String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+}
