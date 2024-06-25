@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -19,6 +20,7 @@ export class AdminGuard implements CanActivate {
 
     if (allowedRules.includes(req.user.type)) return true;
     throw new UnauthorizedException({
+      errorCode: AuthErrorBody.NOT_ALLOWED_RULE.errorCode,
       message: `Only ${allowedRules} can process`,
     });
   }

@@ -4,8 +4,9 @@ import {
   UnprocessableEntityException,
   BadRequestException,
 } from '@nestjs/common';
+import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 
-// :TODO 확장자 추가
+// :TODO add extension kinds
 @Injectable()
 export class FileSizeValidationPipe implements PipeTransform {
   maxMb: number;
@@ -13,15 +14,11 @@ export class FileSizeValidationPipe implements PipeTransform {
     this.maxMb = maxMb;
   }
 
-  transform(file: any) {
-    if (!file)
-      throw new BadRequestException({
-        errorCode: 'NO_FILE',
-        message: 'There is no file',
-      });
+  transform(file: File) {
+    if (!file) throw new BadRequestException(BadInputErrorBody.NO_FILE_PASSED);
     if (file.size > this.maxMb * 1000 * 1000)
       throw new UnprocessableEntityException({
-        errorCode: 'EXCEED_MAX_SIZE',
+        errorCode: BadInputErrorBody.EXCEED_MAX_SIZE.errorCode,
         message: `File is exceed max size(${this.maxMb}MB)`,
       });
 

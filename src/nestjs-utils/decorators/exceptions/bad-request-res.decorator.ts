@@ -1,6 +1,6 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { IErrorContent } from '../../../common/constants/error-body';
+import { IErrorContent } from '../../../common/error-bodies/types/error-content.type';
 
 export const BadRequestRes = (...errors: IErrorContent[]) => {
   return applyDecorators(

@@ -13,7 +13,7 @@ import {
 import { CACHE_TTL } from '../cache/cache.constants';
 import { SmsService } from '../sms/sms.service';
 import { ConfigService } from '@nestjs/config';
-import { ErrorBody } from '../../common/constants/error-body';
+import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 
 @Injectable()
 export class OtpService {
@@ -27,7 +27,7 @@ export class OtpService {
     const key = getSignupablePhoneNumberKey(phoneNumber);
     const result = await this.cacheService.get(key);
     if (result !== 'true')
-      throw new VerificationExpired(ErrorBody.VERIFICATION_EXPIRED);
+      throw new VerificationExpired(AuthErrorBody.VERIFICATION_EXPIRED);
   }
 
   async deleteSignupablePhoneNumberCache(phoneNumber: string) {
@@ -55,7 +55,7 @@ export class OtpService {
     const countString = await this.cacheService.get(key);
     const count = Number(countString);
 
-    if (count > 5) throw new OtpMaxTryExceed(ErrorBody.OTP_MAX_TRY_EXCEED);
+    if (count > 5) throw new OtpMaxTryExceed(AuthErrorBody.OTP_MAX_TRY_EXCEED);
 
     await this.cacheService.setex(
       key,
@@ -83,7 +83,8 @@ export class OtpService {
     const key = getOtpKey(phoneNumber);
     const savedOtp = await this.cacheService.get(key);
 
-    if (savedOtp !== otp) throw new NotMatchedOtp(ErrorBody.NOT_MATCHED_OTP);
+    if (savedOtp !== otp)
+      throw new NotMatchedOtp(AuthErrorBody.NOT_MATCHED_OTP);
 
     await this.cacheService.del(key);
     await this.cacheService.setex(

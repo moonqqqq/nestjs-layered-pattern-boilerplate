@@ -23,9 +23,11 @@ export class ServiceLayerExceptionToHttpExceptionFilter extends BaseExceptionFil
     if (exception instanceof BadInputException) status = HttpStatus.BAD_REQUEST;
     if (exception instanceof DuplicateException) status = HttpStatus.CONFLICT;
 
+    exception.stack;
     res.status(status).json({
       errorCode: exception.errorCode,
       message: exception.message,
+      stack: process.env.NODE_ENV === 'dev' ? exception.stack : undefined,
     });
   }
 }

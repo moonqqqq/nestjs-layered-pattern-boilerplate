@@ -7,9 +7,9 @@ import { ConfigService } from '@nestjs/config';
 import { ILoggerService } from '../logger/interface/logger-service.interface';
 import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
-import { ErrorBody } from '../../common/constants/error-body';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { ITokens } from '../../common/types/tokens.interface.';
+import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 
 @Injectable()
 export class JwtService {
@@ -64,7 +64,7 @@ export class JwtService {
   async verifyToken(token: string): Promise<IUserPayload> {
     return new Promise((resolve, reject) => {
       if (token.split(' ')[0] !== 'Bearer') {
-        throw new BadRequestException({ message: 'Not proper token' });
+        throw new BadRequestException(AuthErrorBody.INVALID_TOKEN_TYPE);
       }
 
       jwt.verify(
@@ -73,13 +73,13 @@ export class JwtService {
         (err, decoded) => {
           if (err) {
             if (err.message === 'jwt expired') {
-              reject(new UnauthorizedException(ErrorBody.JWT_EXPIRED));
+              reject(new UnauthorizedException(AuthErrorBody.JWT_EXPIRED));
             } else if (err.message === 'invalid signature') {
               reject(
                 new UnauthorizedException({ message: 'Invalid signature' }),
               );
             } else if (err.message === 'jwt malformed') {
-              reject(new UnauthorizedException(ErrorBody.JWT_MALFORMED));
+              reject(new UnauthorizedException(AuthErrorBody.JWT_MALFORMED));
             } else {
               this.loggerService.error(err);
               reject(err);

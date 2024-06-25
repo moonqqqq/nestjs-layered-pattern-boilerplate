@@ -27,6 +27,8 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
       });
     }
     // set Alert to developer
-    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({});
+    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      stack: process.env.NODE_ENV === 'dev' ? exception.stack : undefined,
+    });
   }
 }
