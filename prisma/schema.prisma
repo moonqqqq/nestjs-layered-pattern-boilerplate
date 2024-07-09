@@ -8,22 +8,143 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                                String     @id @default(uuid())
-  loginId                           String     @unique
-  password                          String
+model UserEntity {
+  id        String          @id @default(uuid())
 
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+  chatrooms  ChatroomEntity[]
+  messages  MessageEntity[]
+  taggedMessages  TaggedUserEntity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("User")
 }
 
-model File {
-  id           String @id @default(uuid())
-  name         String
-  originalName String
-  path         String
-  size         String
-  userId       String?
+model UserProfileEntity {
+  id        String          @id @default(uuid())
+  name      String
+  profileImage    FileEntity?
+  phoneNumber     String
 
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@map("UserProfile")
+}
+
+model ChatroomEntity {
+  id        String          @id @default(uuid())
+  type ChatroomType
+  title      String
+
+  members   UserEntity[]
+  chatroomMasterUserId  String
+
+  messages  MessageEntity[]
+
+  chatroomImage FileEntity?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Comment")
+}
+
+enum ChatroomType {
+  GROUP
+  ONE_TO_ONE
+}
+
+enum MessageType {
+  TEXT
+  STICKER
+}
+
+model StickerEntity {
+  id        String          @id @default(uuid())
+  name      String
+  file    FileEntity?
+  messages  MessageEntity[]
+
+  @@map("Sticker")
+}
+
+model MessageEntity {
+  id        String          @id @default(uuid())
+  type          MessageType @default(TEXT)
+  content      String
+
+  chatroomId String
+  chatroom  ChatroomEntity   @relation(fields: [chatroomId], references: [id])
+
+  userId  String
+  user    UserEntity  @relation(fields: [userId], references: [id])
+  
+  stickerId     String?
+  sticker       StickerEntity?   @relation(fields:[stickerId], references: [id])
+
+  emojiReactions EmojiReactionEntity[]
+  taggedUsers      TaggedUserEntity[]
+
+  // Self relation
+  referringMessageId  String? @unique
+  referringMessage    MessageEntity? @relation("ReferringMessage", fields: [referringMessageId], references: [id])
+  // this is only for prisma requirement of self relation
+  symmetricMessage     MessageEntity? @relation("ReferringMessage")  
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Message")
+}
+
+
+model TaggedUserEntity {
+  id        String          @id @default(uuid())
+  messageId String
+  message   MessageEntity   @relation(fields: [messageId], references: [id])
+  userId    String
+  user      UserEntity      @relation(fields: [userId], references: [id])
+
+  @@map("TaggedUser")
+}
+
+model EmojiReactionEntity {
+  id        String          @id @default(uuid())
+  userId    String
+  emogiReactionType  EmojiReacitonType
+
+  messageId String
+  message  MessageEntity   @relation(fields: [messageId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("EmojiReaction")
+}
+
+enum EmojiReacitonType {
+  SMILE
+  CRYING
+}
+
+model FileEntity {
+  id        String          @id @default(uuid())
+  accessUrl           String
+  originalFilename    String
+  filename            String
+  location            String
+  mimeType            String
+  size                String
+
+  userProfileId            String  @unique
+  userProfileEntity              UserProfileEntity    @relation(fields: [userProfileId], references: [id])
+  
+  chatroomId        String  @unique
+  chatroom          ChatroomEntity    @relation(fields: [chatroomId], references: [id])
+  
+  stickerId        String  @unique
+  sticker          StickerEntity    @relation(fields: [stickerId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("File")
 }
