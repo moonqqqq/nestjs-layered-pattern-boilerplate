@@ -127,22 +127,20 @@ enum EmojiReacitonType {
 }
 
 model FileEntity {
-  id        String          @id @default(uuid())
-  accessUrl           String
-  originalFilename    String
-  filename            String
-  location            String
-  mimeType            String
-  size                String
+  id           String @id @default(uuid())
+  name         String
+  originalName String
+  path         String
+  size         String
 
-  userProfileId            String  @unique
-  userProfileEntity              UserProfileEntity    @relation(fields: [userProfileId], references: [id])
+  userProfileId                  String?  @unique
+  userProfileEntity              UserProfileEntity?    @relation(fields: [userProfileId], references: [id])
   
-  chatroomId        String  @unique
-  chatroom          ChatroomEntity    @relation(fields: [chatroomId], references: [id])
+  chatroomId        String?  @unique
+  chatroom          ChatroomEntity?    @relation(fields: [chatroomId], references: [id])
   
-  stickerId        String  @unique
-  sticker          StickerEntity    @relation(fields: [stickerId], references: [id])
+  stickerId        String?  @unique
+  sticker          StickerEntity?    @relation(fields: [stickerId], references: [id])
 
   createdAt DateTime @default(now())
 

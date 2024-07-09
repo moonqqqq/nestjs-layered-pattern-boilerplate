@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ILoggerService } from '../logger/interface/logger-service.interface';
-import { User } from '@prisma/client';
+import { UserEntity } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { ITokens } from '../../common/types/tokens.interface.';
@@ -41,7 +41,7 @@ export class JwtService {
   }
 
   async #signToken(
-    payload: Partial<User>,
+    payload: Partial<UserEntity>,
     secretKey: string,
     expiresIn: string | number,
   ): Promise<string> {

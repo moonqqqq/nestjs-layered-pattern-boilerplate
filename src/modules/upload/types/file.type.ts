@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
 
-const file = Prisma.validator<Prisma.FileDefaultArgs>()({});
+const file = Prisma.validator<Prisma.FileEntityDefaultArgs>()({});
 
-export type TFile = Prisma.FileGetPayload<typeof file>;
+export type TFile = Prisma.FileEntityGetPayload<typeof file>;

@@ -5,7 +5,7 @@ import { PrismaService } from '../../share-modules/database/prisma/prisma.servic
 export class FileService {
   constructor(private prisma: PrismaService) {}
   async checkIsValidFileId(id: string) {
-    const file = await this.prisma.file.findFirst({
+    const file = await this.prisma.fileEntity.findFirst({
       where: {
         id,
       },
