@@ -24,7 +24,10 @@ model UserEntity {
 model UserProfileEntity {
   id        String          @id @default(uuid())
   name      String
-  profileImage    FileEntity?
+
+  profileImageId  String? @unique
+  profileImage    FileEntity? @relation(fields: [profileImageId], references: [id])
+
   phoneNumber     String
 
   @@map("UserProfile")
@@ -40,7 +43,9 @@ model ChatroomEntity {
 
   messages  MessageEntity[]
 
-  chatroomImage FileEntity?
+  chatroomImageId  String? @unique
+  chatroomImage    FileEntity? @relation(fields: [chatroomImageId], references: [id])
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -61,8 +66,10 @@ enum MessageType {
 model StickerEntity {
   id        String          @id @default(uuid())
   name      String
-  file    FileEntity?
   messages  MessageEntity[]
+
+  fileId  String? @unique
+  file    FileEntity? @relation(fields: [fileId], references: [id])
 
   @@map("Sticker")
 }
@@ -133,14 +140,9 @@ model FileEntity {
   path         String
   size         String
 
-  userProfileId                  String?  @unique
-  userProfileEntity              UserProfileEntity?    @relation(fields: [userProfileId], references: [id])
-  
-  chatroomId        String?  @unique
-  chatroom          ChatroomEntity?    @relation(fields: [chatroomId], references: [id])
-  
-  stickerId        String?  @unique
-  sticker          StickerEntity?    @relation(fields: [stickerId], references: [id])
+  userProfile UserProfileEntity?
+  chatroom    ChatroomEntity?
+  sticker     StickerEntity?
 
   createdAt DateTime @default(now())
 
