@@ -7,18 +7,27 @@ import { BadRequestRes } from '../../nestjs-utils/decorators/exceptions/bad-requ
 import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 import { SigninReqBodyDto } from './dtos/signin-req-body.dto';
 import ResWrapper from '../../custom-utils/res-wrapper/res-wrapper.static';
+import { SignupReqBodyDto } from './dtos/signup-req-body.dto';
+import { ApiNoContentResponse } from '@nestjs/swagger';
 
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.AUTH}`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('signup')
+  @ApiNoContentResponse()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async signup(@Body() dto: SignupReqBodyDto) {
+    await this.authService.signup(dto.toDomain());
+  }
+
   @Post('signin')
   @ApiOKSingleResponse(ITokens)
   @BadRequestRes(AuthErrorBody.WRONG_LOGIN_CREDENTIAL)
   @HttpCode(HttpStatus.OK)
-  async signin(@Body() { loginId, password }: SigninReqBodyDto): Promise<void> {
+  async signin(@Body() { loginId, password }: SigninReqBodyDto) {
     const tokens = await this.authService.signin(loginId, password);
 
-    ResWrapper.single(tokens);
+    return ResWrapper.single(tokens);
   }
 }

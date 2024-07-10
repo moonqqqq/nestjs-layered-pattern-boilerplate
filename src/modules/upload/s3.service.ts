@@ -28,7 +28,7 @@ export class S3Service implements IUploadService {
     const formattedFilename = this.#getFormattedFileName(file.originalname);
     const uploadResult = await this.#uploadImage(file, formattedFilename);
 
-    const savedFile = await this.prisma.fileEntity.create({
+    const savedFile = await this.prisma.inputFileEntity.create({
       data: {
         name: this.#getFormattedFileName(file.originalname),
         originalName: file.originalname,
@@ -44,7 +44,7 @@ export class S3Service implements IUploadService {
     const formattedFilename = this.#getFormattedFileName(file.originalname);
     const uploadResult = await this.#uploadFile(file, formattedFilename);
 
-    const savedFile = await this.prisma.fileEntity.create({
+    const savedFile = await this.prisma.inputFileEntity.create({
       data: {
         name: this.#getFormattedFileName(file.originalname),
         originalName: file.originalname,

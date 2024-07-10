@@ -10,6 +10,6 @@ export const InternalErrorBody: Record<
 > = {
   INTERNAL_SERVER_ERROR: {
     errorCode: INTERNAL_SERVER_CODE.INTERNAL_SERVER_ERROR,
-    message: 'User already exists',
+    message: 'Call the server developer',
   },
 } as const;

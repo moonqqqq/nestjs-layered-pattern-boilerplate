@@ -29,14 +29,13 @@ model UserEntity {
 
 model UserProfileEntity {
   id        String          @id @default(uuid())
-  userId    String          @unique
   user      UserEntity?
 
   name      String
   phoneNumber     String
 
   profileImageId  String? @unique
-  profileImage    FileEntity? @relation(fields: [profileImageId], references: [id])
+  profileImage    InputFileEntity? @relation(fields: [profileImageId], references: [id])
 
   @@map("UserProfile")
 }
@@ -52,7 +51,7 @@ model ChatroomEntity {
   messages  MessageEntity[]
 
   chatroomImageId  String? @unique
-  chatroomImage    FileEntity? @relation(fields: [chatroomImageId], references: [id])
+  chatroomImage    InputFileEntity? @relation(fields: [chatroomImageId], references: [id])
 
 
   createdAt DateTime @default(now())
@@ -77,7 +76,7 @@ model StickerEntity {
   messages  MessageEntity[]
 
   fileId  String? @unique
-  file    FileEntity? @relation(fields: [fileId], references: [id])
+  file    InputFileEntity? @relation(fields: [fileId], references: [id])
 
   @@map("Sticker")
 }
@@ -141,7 +140,7 @@ enum EmojiReacitonType {
   CRYING
 }
 
-model FileEntity {
+model InputFileEntity {
   id           String @id @default(uuid())
   name         String
   originalName String
@@ -154,5 +153,5 @@ model FileEntity {
 
   createdAt DateTime @default(now())
 
-  @@map("File")
+  @@map("InputFile")
 }
