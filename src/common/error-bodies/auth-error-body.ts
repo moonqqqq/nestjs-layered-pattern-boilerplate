@@ -1,6 +1,7 @@
 import { IErrorContent } from './types/error-content.type';
 
 export const AUTH_ERROR_CODE = {
+  WRONG_LOGIN_CREDENTIAL: 'WRONG_LOGIN_CREDENTIAL',
   TOKEN_REQUIRED: 'TOKEN_REQUIRED',
   NOT_MATCHED_OTP: 'NOT_MATCHED_OTP',
   USER_ALREADY_EXISTS: 'USER_ALREADY_EXISTS',
@@ -16,6 +17,10 @@ export const AuthErrorBody: Record<
   keyof typeof AUTH_ERROR_CODE,
   IErrorContent
 > = {
+  WRONG_LOGIN_CREDENTIAL: {
+    errorCode: AUTH_ERROR_CODE.WRONG_LOGIN_CREDENTIAL,
+    message: 'loginId or password is wrong',
+  },
   TOKEN_REQUIRED: {
     errorCode: AUTH_ERROR_CODE.TOKEN_REQUIRED,
     message: 'Token required',

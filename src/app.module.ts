@@ -14,6 +14,8 @@ import { SmsModule } from './share-modules/sms/sms.module';
 import { DatabaseModule } from './share-modules/database/database.module';
 import { OtpModule } from './share-modules/otp/otp.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { UploadModule } from './modules/upload/upload.module';
     SmsModule,
     OtpModule,
     UploadModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

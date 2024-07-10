@@ -11,9 +11,15 @@ datasource db {
 model UserEntity {
   id        String          @id @default(uuid())
 
+  loginId String
+  password  String
+
   chatrooms  ChatroomEntity[]
   messages  MessageEntity[]
   taggedMessages  TaggedUserEntity[]
+
+  userProfileId   String  @unique
+  userProfile     UserProfileEntity @relation(fields: [userProfileId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -23,12 +29,14 @@ model UserEntity {
 
 model UserProfileEntity {
   id        String          @id @default(uuid())
+  userId    String          @unique
+  user      UserEntity?
+
   name      String
+  phoneNumber     String
 
   profileImageId  String? @unique
   profileImage    FileEntity? @relation(fields: [profileImageId], references: [id])
-
-  phoneNumber     String
 
   @@map("UserProfile")
 }
