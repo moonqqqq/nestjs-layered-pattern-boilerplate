@@ -6,19 +6,19 @@ export class File {
   private readonly _size: string;
   private readonly _createdAt: Date;
 
-  constructor(
-    id: string | null,
-    name: string,
-    originalName: string,
-    path: string,
-    size: string,
-    createdAt: Date,
-  ) {
-    (this._id = id),
-      (this._name = name),
-      (this._originalName = originalName),
-      (this._path = path),
-      (this._size = size),
-      (this._createdAt = createdAt);
+  constructor(file: {
+    id: string | null;
+    name: string;
+    originalName: string;
+    path: string;
+    size: string;
+    createdAt: Date;
+  }) {
+    (this._id = file.id),
+      (this._name = file.name),
+      (this._originalName = file.originalName),
+      (this._path = file.path),
+      (this._size = file.size),
+      (this._createdAt = file.createdAt);
   }
 }

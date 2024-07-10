@@ -9,20 +9,20 @@ export class User {
   private readonly _createdAt?: Date | undefined;
   private readonly _updatedAt?: Date;
 
-  constructor(
-    id: string | null,
-    loginId: string,
-    password: string,
-    userProfile: UserProfile,
-    createdAt: Date,
-    updatedAt: Date,
-  ) {
-    (this._id = id),
-      (this._loginId = loginId),
-      (this._password = password),
-      (this._userProfile = userProfile);
-    this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
+  constructor(user: {
+    id: string | null;
+    loginId: string;
+    password: string;
+    userProfile: UserProfile;
+    createdAt: Date;
+    updatedAt: Date;
+  }) {
+    (this._id = user.id),
+      (this._loginId = user.loginId),
+      (this._password = user.password),
+      (this._userProfile = user.userProfile);
+    this._createdAt = user.createdAt;
+    this._updatedAt = user.updatedAt;
   }
 
   // just sampling. add encrypt, becrypt process

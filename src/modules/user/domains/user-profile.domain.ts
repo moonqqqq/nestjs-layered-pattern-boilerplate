@@ -5,9 +5,13 @@ export class UserProfile {
   private readonly _phoneNumber: string;
   private readonly _profileImage?: File;
 
-  constructor(name: string, phoneNumber: string, profileImage?: File) {
-    (this._name = name),
-      (this._phoneNumber = phoneNumber),
-      (this._profileImage = profileImage);
+  constructor(userProfile: {
+    name: string;
+    phoneNumber: string;
+    profileImage?: File;
+  }) {
+    (this._name = userProfile.name),
+      (this._phoneNumber = userProfile.phoneNumber),
+      (this._profileImage = userProfile.profileImage);
   }
 }

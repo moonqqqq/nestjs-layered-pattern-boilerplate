@@ -22,29 +22,17 @@ export class UserRepository {
       },
     });
 
-    const profileImage = new File(
-      userEntity.userProfile.profileImage.id,
-      userEntity.userProfile.profileImage.name,
-      userEntity.userProfile.profileImage.originalName,
-      userEntity.userProfile.profileImage.path,
-      userEntity.userProfile.profileImage.size,
-      userEntity.userProfile.profileImage.createdAt,
-    );
+    const profileImage = new File(userEntity.userProfile.profileImage);
 
-    const userProfile = new UserProfile(
-      userEntity.userProfile.name,
-      userEntity.userProfile.phoneNumber,
+    const userProfile = new UserProfile({
+      ...userEntity.userProfile,
       profileImage,
-    );
+    });
 
-    const user = new User(
-      userEntity.id,
-      userEntity.loginId,
-      userEntity.password,
+    const user = new User({
+      ...userEntity,
       userProfile,
-      userEntity.createdAt,
-      userEntity.updatedAt,
-    );
+    });
 
     return user;
   }
