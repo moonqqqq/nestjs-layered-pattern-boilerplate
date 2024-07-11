@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { UserProfile } from '../../modules/user/domains/user-profile.domain';
-import { InputFile } from '../../modules/upload/domains/file.domain';
-import { InputFileResDto } from '../../modules/upload/dtos/upload-file-res.dto';
+import { UserProfile } from '../../user/domains/user-profile.domain';
+import { InputFile } from '../../upload/domains/file.domain';
+import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
 
 export class UserProfileResDto {
   @Exclude() private readonly _name: string;

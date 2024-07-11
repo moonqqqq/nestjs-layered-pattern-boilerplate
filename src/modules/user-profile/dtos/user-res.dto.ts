@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { User } from '../../modules/user/domains/user.domain';
-import { UserProfile } from '../../modules/user/domains/user-profile.domain';
+import { User } from '../../user/domains/user.domain';
+import { UserProfile } from '../../user/domains/user-profile.domain';
 import { UserProfileResDto } from './user-profile-res.dto';
 
 export class UserResDto {

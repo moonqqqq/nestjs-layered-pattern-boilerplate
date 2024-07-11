@@ -6,14 +6,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
-import { API_ENDPOINT, API_VERSION } from '../common/constants/api-versions';
+import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ReqUser } from '../nestjs-utils/decorators/user.decorator';
-import { IUserPayload } from '../common/dtos/user-payload.dto';
-import { JwtAuthGuard } from '../nestjs-utils/guards/jwt-auth.guard';
+import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
+import { IUserPayload } from '../../common/dtos/user-payload.dto';
+import { JwtAuthGuard } from '../../nestjs-utils/guards/jwt-auth.guard';
 import { UserResDto } from './dtos/user-res.dto';
-import { ApiOKSingleResponse } from '../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
-import { ResWrapSingleDto } from '../common/dtos/res-wrappers.dto';
+import { ApiOKSingleResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
+import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 
 @ApiTags(`${API_ENDPOINT.USER_PROFILE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.USER_PROFILE}`)
