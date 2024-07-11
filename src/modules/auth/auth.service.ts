@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async signup(user: User): Promise<void> {
-    const alreadyExists = await this.userRepository.checkLoginIdDuplicate(
+    const alreadyExists = await this.userRepository.findByLoginId(
       user.getUserLoginId(),
     );
     if (alreadyExists)

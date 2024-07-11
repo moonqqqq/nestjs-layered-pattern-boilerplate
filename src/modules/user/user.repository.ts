@@ -6,16 +6,6 @@ import { User } from './domains/user.domain';
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async checkLoginIdDuplicate(loginId: string) {
-    const userEntity = await this.prisma.userEntity.findFirst({
-      where: {
-        loginId,
-      },
-    });
-
-    return !!userEntity;
-  }
-
   async create(user: User) {
     const userEntity = user.toEntity();
 
