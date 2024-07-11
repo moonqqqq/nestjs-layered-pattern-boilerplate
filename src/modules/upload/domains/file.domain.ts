@@ -1,10 +1,10 @@
 export class InputFile {
-  private readonly id: string | null;
-  private readonly name: string;
-  private readonly originalName: string;
-  private readonly path: string;
-  private readonly size: string;
-  private readonly createdAt: Date;
+  readonly id: string | null;
+  readonly name: string;
+  readonly originalName: string;
+  readonly path: string;
+  readonly size: string;
+  readonly createdAt: Date;
 
   constructor(file: {
     id: string | null;
@@ -26,10 +26,28 @@ export class InputFile {
     return {
       id: this.id || null,
       name: this.name,
-      phoneNumber: this.originalName,
-      profileImage: this.path,
+      originalName: this.originalName,
+      path: this.path,
       size: this.size,
       createdAt: this.createdAt,
     };
+  }
+
+  fromEntity(inputFileEntity: {
+    id: string;
+    name: string;
+    originamName: string;
+    path: string;
+    size: string;
+    createdAt: Date;
+  }) {
+    return new InputFile({
+      id: inputFileEntity.id,
+      name: inputFileEntity.name,
+      originalName: inputFileEntity.originamName,
+      path: inputFileEntity.path,
+      size: inputFileEntity.size,
+      createdAt: inputFileEntity.createdAt,
+    });
   }
 }

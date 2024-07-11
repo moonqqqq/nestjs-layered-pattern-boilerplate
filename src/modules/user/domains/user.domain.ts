@@ -2,13 +2,13 @@ import { UserProfile } from './user-profile.domain';
 import { InputFile } from '../../upload/domains/file.domain';
 
 export class User {
-  private readonly id?: string | null;
-  private readonly loginId?: string;
-  private readonly password?: string;
+  readonly id?: string | null;
+  readonly loginId?: string;
+  readonly password?: string;
 
-  private readonly userProfile: UserProfile;
-  private readonly createdAt?: Date | undefined;
-  private readonly updatedAt?: Date;
+  readonly userProfile: UserProfile;
+  readonly createdAt?: Date | undefined;
+  readonly updatedAt?: Date;
 
   constructor(user: {
     id?: string;
@@ -42,6 +42,7 @@ export class User {
     loginId: string;
     password: string;
     userProfile: {
+      id: string;
       name: string;
       phoneNumber: string;
       profileImage?: {

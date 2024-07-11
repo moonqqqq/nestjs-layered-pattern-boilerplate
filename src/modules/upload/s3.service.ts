@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { FILE_ENUM, FILE_ENUM_TYPE } from './file.constants';
 import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { ILoggerService } from '../../share-modules/logger/interface/logger-service.interface';
+import { InputFile } from './domains/file.domain';
 
 @Injectable()
 export class S3Service implements IUploadService {
@@ -37,7 +38,7 @@ export class S3Service implements IUploadService {
       },
     });
 
-    return savedFile;
+    return new InputFile(savedFile);
   }
 
   async uploadFile(file: Express.Multer.File) {
@@ -53,7 +54,7 @@ export class S3Service implements IUploadService {
       },
     });
 
-    return savedFile;
+    return new InputFile(savedFile);
   }
 
   async #uploadImage(file: Express.Multer.File, formattedFilename: string) {

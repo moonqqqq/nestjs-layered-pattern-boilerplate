@@ -6,9 +6,9 @@ import { ITokens } from '../../common/types/tokens.interface.';
 import { BadRequestRes } from '../../nestjs-utils/decorators/exceptions/bad-request-res.decorator';
 import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 import { SigninReqBodyDto } from './dtos/signin-req-body.dto';
-import ResWrapper from '../../custom-utils/res-wrapper/res-wrapper.static';
 import { SignupReqBodyDto } from './dtos/signup-req-body.dto';
 import { ApiNoContentResponse } from '@nestjs/swagger';
+import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.AUTH}`)
 export class AuthController {
@@ -28,7 +28,7 @@ export class AuthController {
   async signin(@Body() { loginId, password }: SigninReqBodyDto) {
     const tokens = await this.authService.signin(loginId, password);
 
-    return ResWrapper.single(tokens);
+    return new ResWrapSingleDto(tokens);
   }
 
   // regenerate token by refreshToken

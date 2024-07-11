@@ -1,9 +1,7 @@
-import { InputFileEntity } from '@prisma/client';
+import { InputFile } from '../domains/file.domain';
 
 export abstract class IUploadService {
   // uploadImage: (file: Express.Multer.File) => Promise<{ savedURL: string }>;
-  uploadCertificateImage: (
-    file: Express.Multer.File,
-  ) => Promise<InputFileEntity>;
-  uploadFile: (file: Express.Multer.File) => Promise<InputFileEntity>;
+  uploadCertificateImage: (file: Express.Multer.File) => Promise<InputFile>;
+  uploadFile: (file: Express.Multer.File) => Promise<InputFile>;
 }

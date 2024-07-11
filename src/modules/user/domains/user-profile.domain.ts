@@ -1,9 +1,9 @@
 import { InputFile } from '../../upload/domains/file.domain';
 
 export class UserProfile {
-  private readonly name: string;
-  private readonly phoneNumber: string;
-  private readonly profileImage?: InputFile;
+  readonly name: string;
+  readonly phoneNumber: string;
+  readonly profileImage?: InputFile;
 
   constructor(userProfile: {
     name: string;

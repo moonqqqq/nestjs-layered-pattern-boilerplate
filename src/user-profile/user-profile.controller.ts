@@ -7,13 +7,15 @@ import {
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
 import { API_ENDPOINT, API_VERSION } from '../common/constants/api-versions';
-import { ApiBearerAuth } from '@nestjs/swagger';
-// import { ApiOKSingleResponse } from '../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReqUser } from '../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../common/dtos/user-payload.dto';
 import { JwtAuthGuard } from '../nestjs-utils/guards/jwt-auth.guard';
-import ResWrapper from '../custom-utils/res-wrapper/res-wrapper.static';
+import { UserResDto } from './dtos/user-res.dto';
+import { ApiOKSingleResponse } from '../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
+import { ResWrapSingleDto } from '../common/dtos/res-wrappers.dto';
 
+@ApiTags(`${API_ENDPOINT.USER_PROFILE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.USER_PROFILE}`)
 export class UserProfileController {
   constructor(private readonly userProfileService: UserProfileService) {}
@@ -21,12 +23,13 @@ export class UserProfileController {
   @Get('my')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  // @ApiOKSingleResponse()
+  @ApiOKSingleResponse(UserResDto)
   @HttpCode(HttpStatus.OK)
-  async signup(@ReqUser() currentUser: IUserPayload) {
-    // get user
+  async signup(
+    @ReqUser() currentUser: IUserPayload,
+  ): Promise<ResWrapSingleDto<UserResDto>> {
     const user = await this.userProfileService.getUserById(currentUser.id);
 
-    return ResWrapper.single(user);
+    return new ResWrapSingleDto(new UserResDto(user));
   }
 }

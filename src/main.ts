@@ -1,7 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  RequestMethod,
+  ValidationPipe,
+} from '@nestjs/common';
 import { HttpExceptionFilter } from './nestjs-utils/filters/http-exception.filter';
 import { ILoggerService } from './share-modules/logger/interface/logger-service.interface';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -40,6 +44,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.useGlobalFilters(new UnhandledExceptionFilter(logger));
   app.useGlobalFilters(new ServiceLayerExceptionToHttpExceptionFilter());
