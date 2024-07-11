@@ -2,13 +2,13 @@ import { UserProfile } from './user-profile.domain';
 import { InputFile } from '../../upload/domains/file.domain';
 
 export class User {
-  private readonly _id?: string | null;
-  private readonly _loginId?: string;
-  private readonly _password?: string;
+  private readonly id?: string | null;
+  private readonly loginId?: string;
+  private readonly password?: string;
 
-  private readonly _userProfile: UserProfile;
-  private readonly _createdAt?: Date | undefined;
-  private readonly _updatedAt?: Date;
+  private readonly userProfile: UserProfile;
+  private readonly createdAt?: Date | undefined;
+  private readonly updatedAt?: Date;
 
   constructor(user: {
     id?: string;
@@ -18,22 +18,22 @@ export class User {
     createdAt?: Date;
     updatedAt?: Date;
   }) {
-    (this._id = user.id),
-      (this._loginId = user.loginId),
-      (this._password = user.password),
-      (this._userProfile = user.userProfile);
-    this._createdAt = user.createdAt;
-    this._updatedAt = user.updatedAt;
+    (this.id = user.id),
+      (this.loginId = user.loginId),
+      (this.password = user.password),
+      (this.userProfile = user.userProfile);
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
   }
 
   toEntity() {
     return {
-      id: this._id,
-      loginId: this._loginId,
-      password: this._password,
-      userProfile: this._userProfile.toEntity(),
-      createdAt: this._createdAt,
-      updatedAt: this._updatedAt,
+      id: this.id,
+      loginId: this.loginId,
+      password: this.password,
+      userProfile: this.userProfile.toEntity(),
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   }
 
@@ -72,14 +72,14 @@ export class User {
 
   // just sampling. add encrypt, becrypt process
   checkPasswordCorrect(password): boolean {
-    return this._password === password;
+    return this.password === password;
   }
 
   getUserId() {
-    return this._id;
+    return this.id;
   }
 
   getUserLoginId() {
-    return this._loginId;
+    return this.loginId;
   }
 }
