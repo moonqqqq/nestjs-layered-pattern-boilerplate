@@ -55,4 +55,21 @@ export class UserRepository {
 
     return User.fromEntity(userEntity);
   }
+
+  async findById(id: string): Promise<User> {
+    const userEntity = await this.prisma.userEntity.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        userProfile: {
+          include: {
+            profileImage: true,
+          },
+        },
+      },
+    });
+
+    return User.fromEntity(userEntity);
+  }
 }

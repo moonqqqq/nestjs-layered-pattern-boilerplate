@@ -16,6 +16,7 @@ import { OtpModule } from './share-modules/otp/otp.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserProfileModule } from './user-profile/user-profile.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './modules/auth/auth.module';
     UploadModule,
     UserModule,
     AuthModule,
+    UserProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
