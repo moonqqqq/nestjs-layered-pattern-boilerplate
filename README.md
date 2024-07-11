@@ -1,8 +1,11 @@
+
 ## Table of contents
 - [Rules](#rules)
 - [Folder Structure](#folder-structure)
 - [Check Points](#check-points)
 - [Running server](#running-server)
+
+This codebase shows practice of OOP with Whatsapp Messenger Backend Clone.
 
 This base code have set uped prequently used library modules like cache, s3 uploader etc.
 Check the .env.example file to run the project.
@@ -28,13 +31,14 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 
 - [x] ConfigService
 - [x] Database - Prisma.js
-- [ ] Layered Exception and Filter
+- [x] Layered Exception and Filter
 - [x] FileUpload with S3.
 - [x] Swagger
 - [x] Docker
 - [ ] socialLogin
 - [ ] fcm
 - [ ] socket
+- [ ] message queue
 
 
 # [Concerns](./docs/concern.md)
