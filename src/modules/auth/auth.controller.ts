@@ -30,4 +30,7 @@ export class AuthController {
 
     return ResWrapper.single(tokens);
   }
+
+  // regenerate token by refreshToken
+  // @Get('regenerate-token')
 }
