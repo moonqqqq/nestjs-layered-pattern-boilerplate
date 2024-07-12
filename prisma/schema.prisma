@@ -43,10 +43,10 @@ model UserProfileEntity {
 model ChatroomEntity {
   id        String          @id @default(uuid())
   type ChatroomType
-  title      String
+  title      String?
 
   members   UserEntity[]
-  chatroomMasterUserId  String
+  masterUserId  String
 
   messages  MessageEntity[]
 

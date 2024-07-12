@@ -9,5 +9,5 @@ export const API_ENDPOINT = {
   UPLOAD: 'upload',
   USER_PROFILE: 'user-profile',
   COMPANY: 'company',
-  BATCH: 'batch',
+  CHATROOM: 'chatroom',
 } as const;
