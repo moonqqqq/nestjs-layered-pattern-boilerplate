@@ -56,6 +56,16 @@ export class UserRepository {
     return User.fromEntity(userEntity);
   }
 
+  async checkLoginIdDuplicate(loginId: string): Promise<boolean> {
+    const userEntity = await this.prisma.userEntity.findFirst({
+      where: {
+        loginId,
+      },
+    });
+
+    return !!userEntity;
+  }
+
   async findById(id: string): Promise<User> {
     const userEntity = await this.prisma.userEntity.findFirst({
       where: {

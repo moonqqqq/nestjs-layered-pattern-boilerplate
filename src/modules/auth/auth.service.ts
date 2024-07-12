@@ -18,10 +18,10 @@ export class AuthService {
   ) {}
 
   async signup(user: User): Promise<void> {
-    const alreadyExists = await this.userRepository.findByLoginId(
+    const duplicate = await this.userRepository.checkLoginIdDuplicate(
       user.getUserLoginId(),
     );
-    if (alreadyExists)
+    if (duplicate)
       throw new UserAlreadyExists(BadInputErrorBody.DUPLICATE_LOGIN_ID);
 
     // Create user

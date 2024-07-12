@@ -56,6 +56,7 @@ export class SignupReqBodyDto {
       password: this.password,
       userProfile,
     });
+
     return user;
   }
 }

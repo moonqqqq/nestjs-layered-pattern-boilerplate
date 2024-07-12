@@ -1,4 +1,3 @@
-import { InputFile } from '../../upload/domains/file.domain';
 import { UserProfile } from '../../user-profile/domains/user-profile.domain';
 
 export class User {
@@ -55,19 +54,9 @@ export class User {
       };
     };
   }) {
-    let profileImage: InputFile;
-    if (userEntity.userProfile.profileImage) {
-      profileImage = new InputFile(userEntity.userProfile.profileImage);
-    }
-
-    const userProfile = new UserProfile({
-      ...userEntity.userProfile,
-      profileImage,
-    });
-
     return new User({
       ...userEntity,
-      userProfile,
+      userProfile: UserProfile.fromEntity(userEntity.userProfile),
     });
   }
 
