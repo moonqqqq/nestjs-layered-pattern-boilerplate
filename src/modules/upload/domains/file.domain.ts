@@ -7,7 +7,7 @@ export class InputFile {
   readonly createdAt: Date;
 
   constructor(file: {
-    id: string | null;
+    id?: string;
     name?: string;
     originalName?: string;
     path?: string;
