@@ -18,6 +18,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserProfileModule } from './modules/user-profile/user-profile.module';
 import { FriendsModule } from './modules/friend/friend-relation.module';
+import { ChatroomModule } from './modules/chatroom/chatroom.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { FriendsModule } from './modules/friend/friend-relation.module';
     AuthModule,
     UserProfileModule,
     FriendsModule,
+    ChatroomModule,
   ],
   controllers: [AppController],
   providers: [AppService],
