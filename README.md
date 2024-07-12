@@ -27,7 +27,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 <!-- # Running server <a id="running-server"></a> -->
 # [Running server](./docs/running-server.md)<a id="running-server"></a>
 
-# Features
+# Infra Features
 
 - [x] ConfigService
 - [x] Database - Prisma.js
@@ -39,6 +39,33 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 - [ ] fcm
 - [ ] socket
 - [ ] message queue
+
+# API list
+
+## Authentication
+
+- [x] signup/signin
+- [x] Get/Patch my profile
+
+## Friends
+- [ ] Get friends list
+- [ ] Get friend detail
+
+## Chatrooms
+- [ ] Create chatroom [1 to 1, group]
+- [ ] Get chatrooms
+- [ ] Enter chatroom
+
+## Chat messsage
+- [ ] Get chat messages
+- [ ] Send chat message
+    - [ ] referencing past message
+    - [ ] send attachment together
+    - [ ] tag user on a message
+    - [ ] sticker message
+- [ ] set emoji reaction on a message (? do I seprate emoji reaction from chat message module?)
+- [ ] cancel emoji reaction on a message
+
 
 
 # [Concerns](./docs/concern.md)
