@@ -23,9 +23,6 @@ model UserEntity {
   userProfileId   String  @unique
   userProfile     UserProfileEntity @relation(fields: [userProfileId], references: [id])
 
-  studentId String
-  student
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

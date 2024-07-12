@@ -17,7 +17,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserProfileModule } from './modules/user-profile/user-profile.module';
-import { FriendsModule } from './modules/friends/friends.module';
+import { FriendsModule } from './modules/friend/friend-relation.module';
 
 @Module({
   imports: [

@@ -6,6 +6,14 @@ import { User } from './domains/user.domain';
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  private userQueryIncludeStatement = {
+    userProfile: {
+      include: {
+        profileImage: true,
+      },
+    },
+  };
+
   async create(user: User) {
     const userEntity = user.toEntity();
 
@@ -27,13 +35,7 @@ export class UserRepository {
           },
         },
       },
-      include: {
-        userProfile: {
-          include: {
-            profileImage: true,
-          },
-        },
-      },
+      include: this.userQueryIncludeStatement,
     });
 
     return User.fromEntity(createdUserEntity);
@@ -44,13 +46,7 @@ export class UserRepository {
       where: {
         loginId,
       },
-      include: {
-        userProfile: {
-          include: {
-            profileImage: true,
-          },
-        },
-      },
+      include: this.userQueryIncludeStatement,
     });
 
     return User.fromEntity(userEntity);
@@ -71,15 +67,24 @@ export class UserRepository {
       where: {
         id,
       },
-      include: {
-        userProfile: {
-          include: {
-            profileImage: true,
-          },
-        },
-      },
+      include: this.userQueryIncludeStatement,
     });
 
     return User.fromEntity(userEntity);
+  }
+
+  async findUsersByPhoneNumbers(phoneNumbers: string[]) {
+    const userEntities = await this.prisma.userEntity.findMany({
+      where: {
+        userProfile: {
+          phoneNumber: {
+            in: phoneNumbers,
+          },
+        },
+      },
+      include: this.userQueryIncludeStatement,
+    });
+
+    return userEntities.map((userEntity) => User.fromEntity(userEntity));
   }
 }
