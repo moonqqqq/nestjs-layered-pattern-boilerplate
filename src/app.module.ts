@@ -17,6 +17,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserProfileModule } from './modules/user-profile/user-profile.module';
+import { FriendsModule } from './modules/friends/friends.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UserProfileModule } from './modules/user-profile/user-profile.module';
     UserModule,
     AuthModule,
     UserProfileModule,
+    FriendsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -17,9 +17,14 @@ model UserEntity {
   chatrooms  ChatroomEntity[]
   messages  MessageEntity[]
   taggedMessages  TaggedUserEntity[]
+  friends       FriendRelationEntity[]  @relation("UserFriends")
+  friendOf      FriendRelationEntity[]  @relation("FriendOf")
 
   userProfileId   String  @unique
   userProfile     UserProfileEntity @relation(fields: [userProfileId], references: [id])
+
+  studentId String
+  student
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,6 +43,21 @@ model UserProfileEntity {
   profileImage    InputFileEntity? @relation(fields: [profileImageId], references: [id])
 
   @@map("UserProfile")
+}
+
+model FriendRelationEntity {
+  id        String          @id @default(uuid())      
+
+  userId        String
+  user          UserEntity      @relation("UserFriends", fields: [userId], references: [id])
+  friendId      String
+  friend        UserEntity      @relation("FriendOf", fields: [friendId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
+  @@map("Friend")
 }
 
 model ChatroomEntity {

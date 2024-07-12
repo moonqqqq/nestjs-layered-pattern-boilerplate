@@ -9,5 +9,6 @@ export const API_ENDPOINT = {
   UPLOAD: 'upload',
   USER_PROFILE: 'user-profile',
   COMPANY: 'company',
+  FRIEND: 'friend',
   CHATROOM: 'chatroom',
 } as const;
