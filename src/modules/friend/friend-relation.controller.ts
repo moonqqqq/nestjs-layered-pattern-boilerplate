@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -17,7 +18,9 @@ import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
 import { ResWrapListDto } from '../../common/dtos/res-wrappers.dto';
-import { GetFriendsResDto } from './dtos/get-friends-res.dto';
+import { GetFriendResDto } from './dtos/get-friends-res.dto';
+import { IdParamDto } from '../../common/dtos/id-param.dto';
+import { ApiOKSingleResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
 
 @ApiTags(`${API_ENDPOINT.FRIEND}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.FRIEND}`)
@@ -30,13 +33,13 @@ export class FriendRelationController {
   @Get('my')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKListResponse(GetFriendsResDto)
+  @ApiOKListResponse(GetFriendResDto)
   @HttpCode(HttpStatus.OK)
   async getMyFriends(@ReqUser() currentUser: IUserPayload) {
     const friends = await this.friendService.getFriends(currentUser.id);
 
     return new ResWrapListDto(
-      friends.map((friend) => new GetFriendsResDto(friend)),
+      friends.map((friend) => new GetFriendResDto(friend)),
     );
   }
 
@@ -59,5 +62,22 @@ export class FriendRelationController {
 
     // if exists, add on friends data.
     await this.friendService.addFriendBulk(currentUser.id, users);
+  }
+
+  @Get(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOKSingleResponse(GetFriendResDto)
+  @HttpCode(HttpStatus.OK)
+  async getFriendDetail(
+    @ReqUser() currentUser: IUserPayload,
+    @Param() { id: friendId }: IdParamDto,
+  ) {
+    const friend = await this.friendService.getFriendDetail(
+      currentUser.id,
+      friendId,
+    );
+
+    return new GetFriendResDto(friend);
   }
 }

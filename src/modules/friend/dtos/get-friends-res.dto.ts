@@ -4,7 +4,7 @@ import { UserProfile } from '../../user-profile/domains/user-profile.domain';
 import { User } from '../../user/domains/user.domain';
 import { UserProfileResDto } from '../../user-profile/dtos/user-profile-res.dto';
 
-export class GetFriendsResDto {
+export class GetFriendResDto {
   @Exclude() private readonly _id: string;
   @Exclude() private readonly _loginId: string;
   @Exclude() private readonly _userProfile: UserProfile;

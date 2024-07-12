@@ -5,6 +5,7 @@ export const BAD_INPUT_ERROR_CODE = {
   EXCEED_MAX_SIZE: 'EXCEED_MAX_SIZE',
   DUPLICATE_LOGIN_ID: 'DUPLICATE_LOGIN_ID',
   WRONG_USER_ID: 'WRONG_USER_ID',
+  WRONG_FRIEND_ID: 'WRONG_USER_ID',
 } as const;
 
 export const BadInputErrorBody: Record<
@@ -26,5 +27,9 @@ export const BadInputErrorBody: Record<
   WRONG_USER_ID: {
     errorCode: BAD_INPUT_ERROR_CODE.WRONG_USER_ID,
     message: 'Wrong user id',
+  },
+  WRONG_FRIEND_ID: {
+    errorCode: BAD_INPUT_ERROR_CODE.WRONG_FRIEND_ID,
+    message: 'Wrong friend id',
   },
 } as const;

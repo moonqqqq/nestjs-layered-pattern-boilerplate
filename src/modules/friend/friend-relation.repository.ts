@@ -41,6 +41,20 @@ export class FriendRelationRepository {
     return friends;
   }
 
+  async getFriendDetailByUserId(currentUserId: string, friendId: string) {
+    const friendRelation = await this.prisma.friendRelationEntity.findFirst({
+      where: {
+        userId: currentUserId,
+        friendId,
+      },
+      include: this.friendRelationQueryIncludeStatement,
+    });
+
+    if (!friendRelation) return null;
+
+    return User.fromEntity(friendRelation.friend);
+  }
+
   async save(friendRelation: FriendRelation): Promise<User> {
     const newFriendRelation = await this.prisma.friendRelationEntity.create({
       data: {
