@@ -7,6 +7,7 @@ import { FILE_ENUM, FILE_ENUM_TYPE } from './file.constants';
 import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { ILoggerService } from '../../share-modules/logger/interface/logger-service.interface';
 import { InputFile } from './domains/file.domain';
+import { FILE_MIMETYPE } from './constants/file.constant';
 
 @Injectable()
 export class S3Service implements IUploadService {
@@ -27,34 +28,34 @@ export class S3Service implements IUploadService {
 
   async uploadCertificateImage(file: Express.Multer.File) {
     const formattedFilename = this.#getFormattedFileName(file.originalname);
-    const uploadResult = await this.#uploadImage(file, formattedFilename);
+    const { savedURL } = await this.#uploadImage(file, formattedFilename);
 
-    const savedFile = await this.prisma.inputFileEntity.create({
+    const inputFileEntity = await this.prisma.inputFileEntity.create({
       data: {
         name: this.#getFormattedFileName(file.originalname),
         originalName: file.originalname,
-        path: uploadResult.savedURL,
+        path: savedURL,
         size: String(file.size),
       },
     });
 
-    return new InputFile(savedFile);
+    return new InputFile(inputFileEntity);
   }
 
   async uploadFile(file: Express.Multer.File) {
     const formattedFilename = this.#getFormattedFileName(file.originalname);
-    const uploadResult = await this.#uploadFile(file, formattedFilename);
+    const { savedURL } = await this.#uploadFile(file, formattedFilename);
 
-    const savedFile = await this.prisma.inputFileEntity.create({
+    const inputFileEntity = await this.prisma.inputFileEntity.create({
       data: {
         name: this.#getFormattedFileName(file.originalname),
         originalName: file.originalname,
-        path: uploadResult.savedURL,
+        path: savedURL,
         size: String(file.size),
       },
     });
 
-    return new InputFile(savedFile);
+    return new InputFile(inputFileEntity);
   }
 
   async #uploadImage(file: Express.Multer.File, formattedFilename: string) {
@@ -63,7 +64,7 @@ export class S3Service implements IUploadService {
         .upload({
           Key: this.#getFileKey(FILE_ENUM.IMAGE, formattedFilename),
           Body: file.buffer,
-          ContentType: 'image/png',
+          ContentType: FILE_MIMETYPE.IMAGE_PNG,
           Bucket: this.configService.get('s3.bucket'),
         })
         .promise();
