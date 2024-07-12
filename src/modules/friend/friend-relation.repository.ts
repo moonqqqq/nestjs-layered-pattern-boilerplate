@@ -19,6 +19,28 @@ export class FriendRelationRepository {
     },
   };
 
+  async getFriends(userId: string) {
+    const friendRelations = await this.prisma.friendRelationEntity.findMany({
+      where: {
+        userId,
+      },
+      include: this.friendRelationQueryIncludeStatement,
+      orderBy: {
+        friend: {
+          userProfile: {
+            name: 'asc',
+          },
+        },
+      },
+    });
+
+    const friends = friendRelations.map((friendRelation) =>
+      User.fromEntity(friendRelation.friend),
+    );
+
+    return friends;
+  }
+
   async save(friendRelation: FriendRelation): Promise<User> {
     const newFriendRelation = await this.prisma.friendRelationEntity.create({
       data: {

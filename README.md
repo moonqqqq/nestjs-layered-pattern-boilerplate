@@ -48,7 +48,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 - [x] Get/Patch my profile
 
 ## Friends
-- [ ] Get friends list
+- [x] Get friends list
 - [ ] Get friend detail
 
 ## Chatrooms

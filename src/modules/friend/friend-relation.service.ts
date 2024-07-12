@@ -20,4 +20,8 @@ export class FriendRelationService {
       friendRelations.map((friend) => this.friendRepository.save(friend)),
     );
   }
+
+  async getFriends(userId: string) {
+    return await this.friendRepository.getFriends(userId);
+  }
 }
