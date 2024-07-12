@@ -13,7 +13,7 @@ export class UserProfileService {
   ) {}
 
   async getUserById(id: string) {
-    return await this.userRepository.findById(id);
+    return await this.userProfileRepository.findByUserId(id);
   }
 
   async updateUserProfile(id: string, payload: UpdateUserProfileDto) {

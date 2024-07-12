@@ -13,7 +13,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { JwtAuthGuard } from '../../nestjs-utils/guards/jwt-auth.guard';
-import { UserResDto } from './dtos/user-res.dto';
 import { ApiOKSingleResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-single-res.decorator';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 import { UpdateUserProfileDto } from './dtos/update-user-profile-body.dto';
@@ -27,20 +26,22 @@ export class UserProfileController {
   @Get('my')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKSingleResponse(UserResDto)
+  @ApiOKSingleResponse(UserProfileResDto)
   @HttpCode(HttpStatus.OK)
   async getMy(
     @ReqUser() currentUser: IUserPayload,
-  ): Promise<ResWrapSingleDto<UserResDto>> {
-    const user = await this.userProfileService.getUserById(currentUser.id);
+  ): Promise<ResWrapSingleDto<UserProfileResDto>> {
+    const userProfile = await this.userProfileService.getUserById(
+      currentUser.id,
+    );
 
-    return new ResWrapSingleDto(new UserResDto(user));
+    return new ResWrapSingleDto(new UserProfileResDto(userProfile));
   }
 
   @Patch('my')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKSingleResponse(UserResDto)
+  @ApiOKSingleResponse(UserProfileResDto)
   @HttpCode(HttpStatus.OK)
   async updateMyProfile(
     @ReqUser() currentUser: IUserPayload,
