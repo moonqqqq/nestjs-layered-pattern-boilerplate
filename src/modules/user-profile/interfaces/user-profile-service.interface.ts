@@ -1,4 +1,4 @@
-import { IUser } from './user.interface';
+import { IUser } from '../../user/interfaces/user.interface';
 
 export abstract class IUserProfileService {
   createUser: () => IUser;

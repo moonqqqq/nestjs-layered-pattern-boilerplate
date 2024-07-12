@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { UserProfile } from '../../user/domains/user-profile.domain';
+import { UserProfile } from '../../user-profile/domains/user-profile.domain';
 import { InputFile } from '../../upload/domains/file.domain';
 import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
 

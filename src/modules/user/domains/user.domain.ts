@@ -1,10 +1,10 @@
-import { UserProfile } from './user-profile.domain';
 import { InputFile } from '../../upload/domains/file.domain';
+import { UserProfile } from '../../user-profile/domains/user-profile.domain';
 
 export class User {
   readonly id?: string | null;
-  readonly loginId?: string;
-  readonly password?: string;
+  readonly loginId: string;
+  readonly password: string;
 
   readonly userProfile: UserProfile;
   readonly createdAt?: Date | undefined;

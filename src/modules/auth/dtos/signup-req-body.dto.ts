@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { UserProfile } from '../../user/domains/user-profile.domain';
+import { UserProfile } from '../../user-profile/domains/user-profile.domain';
 import { User } from '../../user/domains/user.domain';
 import { InputFile } from '../../upload/domains/file.domain';
 

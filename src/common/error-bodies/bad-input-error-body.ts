@@ -4,6 +4,7 @@ export const BAD_INPUT_ERROR_CODE = {
   NO_FILE_PASSED: 'NO_FILE_PASSED',
   EXCEED_MAX_SIZE: 'EXCEED_MAX_SIZE',
   DUPLICATE_LOGIN_ID: 'DUPLICATE_LOGIN_ID',
+  WRONG_USER_ID: 'WRONG_USER_ID',
 } as const;
 
 export const BadInputErrorBody: Record<
@@ -21,5 +22,9 @@ export const BadInputErrorBody: Record<
   EXCEED_MAX_SIZE: {
     errorCode: BAD_INPUT_ERROR_CODE.EXCEED_MAX_SIZE,
     message: 'Too large',
+  },
+  WRONG_USER_ID: {
+    errorCode: BAD_INPUT_ERROR_CODE.WRONG_USER_ID,
+    message: 'Wrong user id',
   },
 } as const;

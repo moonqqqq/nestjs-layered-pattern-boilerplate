@@ -35,6 +35,7 @@ export class NotMyProject extends AuthorizationException {}
 export class NotExistingCompanyBizNumber extends BadInputException {}
 export class WrongBusinessCertificateFileIdNumber extends BadInputException {}
 export class WrongProjectId extends BadInputException {}
+export class WrongUserId extends BadInputException {}
 
 /**
  * Conflict
