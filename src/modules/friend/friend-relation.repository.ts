@@ -22,8 +22,16 @@ export class FriendRelationRepository {
   async save(friendRelation: FriendRelation): Promise<User> {
     const newFriendRelation = await this.prisma.friendRelationEntity.create({
       data: {
-        userId: friendRelation.myId,
-        friendId: friendRelation.friend.id,
+        user: {
+          connect: {
+            id: friendRelation.myId,
+          },
+        },
+        friend: {
+          connect: {
+            id: friendRelation.friend.id,
+          },
+        },
       },
       include: this.friendRelationQueryIncludeStatement,
     });
