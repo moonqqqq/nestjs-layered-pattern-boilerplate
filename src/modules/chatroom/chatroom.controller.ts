@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -14,7 +15,10 @@ import { ApiOKSingleResponse } from '../../nestjs-utils/decorators/custom-api-re
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { CreateOneToOneChatroom } from './dtos/create-one-to-one-chatroom-body.dto';
-import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
+import {
+  ResWrapListDto,
+  ResWrapSingleDto,
+} from '../../common/dtos/res-wrappers.dto';
 import { ChatroomResDto } from './dtos/chatroom-res.dto';
 import { CreateGroupChatroom } from './dtos/create-group-chatroom-body.dto';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
@@ -27,6 +31,19 @@ export class ChatroomController {
     private readonly chatroomService: ChatroomService,
     private readonly userService: UserService,
   ) {}
+
+  @Get('my')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOKListResponse(ChatroomResDto)
+  @HttpCode(HttpStatus.OK)
+  async getMyChatrooms(@ReqUser() currentUser: IUserPayload) {
+    const chatrooms = await this.chatroomService.getMyChatrooms(currentUser.id);
+
+    return new ResWrapListDto(
+      chatrooms.map((chatroom) => new ChatroomResDto(chatroom, currentUser.id)),
+    );
+  }
 
   @Post('one-to-one')
   @ApiBearerAuth()

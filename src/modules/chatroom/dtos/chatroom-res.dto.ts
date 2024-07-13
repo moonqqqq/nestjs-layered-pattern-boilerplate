@@ -51,7 +51,7 @@ export class ChatroomResDto {
     return this._type;
   }
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: [UserResDto] })
   @Expose()
   get members(): UserResDto[] {
     return this._members.map((member) => new UserResDto(member));

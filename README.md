@@ -53,7 +53,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 
 ## Chatrooms
 - [x] Create chatroom [1 to 1, group]
-- [ ] Get chatrooms
+- [ ] Get chatrooms - last message content,timestamp need.
 - [ ] Enter chatroom
 
 ## Chat messsage

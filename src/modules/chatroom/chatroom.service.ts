@@ -16,6 +16,10 @@ export class ChatroomService {
     return await this.chatroomRepository.findByUserIds(userIds);
   }
 
+  async getMyChatrooms(userId: string) {
+    return await this.chatroomRepository.getChatroomsByUserId(userId);
+  }
+
   async createOneToOneChatroom(currnetUserId: string, members: User[]) {
     const newChatroom = new Chatroom({
       type: CHATROOM_KIND.ONE_TO_ONE,
