@@ -38,6 +38,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 - [ ] socialLogin
 - [ ] fcm
 - [ ] socket
+    - [ ] adapter
 - [ ] message queue
 
 # API list
@@ -54,7 +55,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 ## Chatrooms
 - [x] Create chatroom [1 to 1, group]
 - [ ] Get chatrooms - last message content,timestamp need.
-- [ ] Enter chatroom
+- [ ] Enter chatroom - after implements the socketio feature
 
 ## Chat messsage
 - [ ] Get chat messages
