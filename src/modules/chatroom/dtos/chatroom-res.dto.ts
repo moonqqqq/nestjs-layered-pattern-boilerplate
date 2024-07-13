@@ -6,7 +6,7 @@ import { Chatroom } from '../domains/chatroom.domain';
 import { IsEnum } from 'class-validator';
 import { UserResDto } from '../../user/dtos/user-res.dto';
 
-export class CreateChatroomResDto {
+export class ChatroomResDto {
   @Exclude() private readonly _id: string;
   @Exclude() private readonly _type: TCHATROOM_KIND;
   @Exclude() private readonly _title?: string;

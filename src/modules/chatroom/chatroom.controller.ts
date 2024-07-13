@@ -15,7 +15,7 @@ import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { CreateOneToOneChatroom } from './dtos/create-one-to-one-chatroom-body.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
-import { CreateChatroomResDto } from './dtos/create-chatroom-res.dto';
+import { ChatroomResDto } from './dtos/chatroom-res.dto';
 import { CreateGroupChatroom } from './dtos/create-group-chatroom-body.dto';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
 import { UserService } from '../user/user.service';
@@ -31,7 +31,7 @@ export class ChatroomController {
   @Post('one-to-one')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKSingleResponse(CreateChatroomResDto)
+  @ApiOKSingleResponse(ChatroomResDto)
   @HttpCode(HttpStatus.OK)
   async createOneToOneChatroom(
     @ReqUser() currentUser: IUserPayload,
@@ -41,7 +41,7 @@ export class ChatroomController {
       await this.chatroomService.checkChatroomExists([currentUser.id, userId]);
     if (alreadyExistingChatroom) {
       return new ResWrapSingleDto(
-        new CreateChatroomResDto(alreadyExistingChatroom, currentUser.id),
+        new ChatroomResDto(alreadyExistingChatroom, currentUser.id),
       );
     }
 
@@ -56,15 +56,13 @@ export class ChatroomController {
       users,
     );
 
-    return new ResWrapSingleDto(
-      new CreateChatroomResDto(chatroom, currentUser.id),
-    );
+    return new ResWrapSingleDto(new ChatroomResDto(chatroom, currentUser.id));
   }
 
   @Post('group')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKListResponse(CreateChatroomResDto)
+  @ApiOKListResponse(ChatroomResDto)
   @HttpCode(HttpStatus.OK)
   async createGroupChatroom(
     @ReqUser() currentUser: IUserPayload,
@@ -77,7 +75,7 @@ export class ChatroomController {
       ]);
     if (alreadyExistingChatroom) {
       return new ResWrapSingleDto(
-        new CreateChatroomResDto(alreadyExistingChatroom, currentUser.id),
+        new ChatroomResDto(alreadyExistingChatroom, currentUser.id),
       );
     }
 
@@ -93,7 +91,7 @@ export class ChatroomController {
     );
 
     return new ResWrapSingleDto(
-      new CreateChatroomResDto(newGroupChatroom, currentUser.id),
+      new ChatroomResDto(newGroupChatroom, currentUser.id),
     );
   }
 }
