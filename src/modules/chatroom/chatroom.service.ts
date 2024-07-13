@@ -5,6 +5,7 @@ import { WrongUserId } from '../../nestjs-utils/exceptions/service-layer.excepti
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { Chatroom } from './domains/chatroom.domain';
 import { CHATROOM_KIND } from './constants/chatroom.constant';
+import { User } from '../user/domains/user.domain';
 
 @Injectable()
 export class ChatroomService {
@@ -30,5 +31,16 @@ export class ChatroomService {
     newChatroom.addMember(targetUser);
 
     return await this.chatroomRepository.save(newChatroom);
+  }
+
+  async createGroupChatroom(currentUserId: string, members: User[]) {
+    const newGroupChatroom = new Chatroom({
+      type: CHATROOM_KIND.GROUP,
+      masterUserId: currentUserId,
+    });
+
+    newGroupChatroom.addMembers(members);
+
+    return await this.chatroomRepository.save(newGroupChatroom);
   }
 }

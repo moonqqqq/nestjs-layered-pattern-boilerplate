@@ -92,6 +92,10 @@ export class Chatroom {
     this.members.push(user);
   }
 
+  addMembers(users: User[]) {
+    this.members.push(...users);
+  }
+
   getMembers() {
     return this.members;
   }

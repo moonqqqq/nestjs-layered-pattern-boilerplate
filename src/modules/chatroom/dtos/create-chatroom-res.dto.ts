@@ -6,7 +6,7 @@ import { Chatroom } from '../domains/chatroom.domain';
 import { IsEnum } from 'class-validator';
 import { UserResDto } from '../../user/dtos/user-res.dto';
 
-export class CreateOneToOneChatroomResDto {
+export class CreateChatroomResDto {
   @Exclude() private readonly _id: string;
   @Exclude() private readonly _type: TCHATROOM_KIND;
   @Exclude() private readonly _title?: string;
@@ -31,10 +31,17 @@ export class CreateOneToOneChatroomResDto {
   @ApiProperty({ example: 'chatroom title' })
   @Expose()
   get title(): string {
-    return this._title
-      ? this._title
-      : this._members.filter((member) => member.id !== this._currentUserId)[0]
-          .userProfile.name;
+    if (this._title) {
+      return this._title;
+    }
+
+    const usersExceptMe = this._members.filter(
+      (member) => member.id !== this._currentUserId,
+    );
+
+    return this._type === CHATROOM_KIND.ONE_TO_ONE
+      ? usersExceptMe[0].userProfile.name
+      : `${usersExceptMe.map((user) => user.userProfile.name)}`;
   }
 
   @ApiProperty({ example: CHATROOM_KIND.ONE_TO_ONE })

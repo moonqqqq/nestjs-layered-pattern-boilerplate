@@ -15,17 +15,23 @@ import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
 import { CreateOneToOneChatroom } from './dtos/create-one-to-one-chatroom-body.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
-import { CreateOneToOneChatroomResDto } from './dtos/create-one-to-one-chatroom-res.dto';
+import { CreateChatroomResDto } from './dtos/create-chatroom-res.dto';
+import { CreateGroupChatroom } from './dtos/create-group-chatroom-body.dto';
+import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
+import { UserService } from '../user/user.service';
 
 @ApiTags(`${API_ENDPOINT.CHATROOM}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHATROOM}`)
 export class ChatroomController {
-  constructor(private readonly chatroomService: ChatroomService) {}
+  constructor(
+    private readonly chatroomService: ChatroomService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('one-to-one')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKSingleResponse(CreateOneToOneChatroomResDto)
+  @ApiOKSingleResponse(CreateChatroomResDto)
   @HttpCode(HttpStatus.OK)
   async createOneToOneChatroom(
     @ReqUser() currentUser: IUserPayload,
@@ -37,7 +43,32 @@ export class ChatroomController {
     );
 
     return new ResWrapSingleDto(
-      new CreateOneToOneChatroomResDto(chatroom, currentUser.id),
+      new CreateChatroomResDto(chatroom, currentUser.id),
+    );
+  }
+
+  @Post('group')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOKListResponse(CreateChatroomResDto)
+  @HttpCode(HttpStatus.OK)
+  async createGroupChatroom(
+    @ReqUser() currentUser: IUserPayload,
+    @Body() { userIds }: CreateGroupChatroom,
+  ) {
+    const users = await Promise.all(
+      [currentUser.id, ...userIds].map((userId) =>
+        this.userService.findById(userId),
+      ),
+    );
+
+    const newGroupChatroom = await this.chatroomService.createGroupChatroom(
+      currentUser.id,
+      users,
+    );
+
+    return new ResWrapSingleDto(
+      new CreateChatroomResDto(newGroupChatroom, currentUser.id),
     );
   }
 }
