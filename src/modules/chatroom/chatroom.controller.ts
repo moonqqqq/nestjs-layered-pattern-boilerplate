@@ -37,9 +37,23 @@ export class ChatroomController {
     @ReqUser() currentUser: IUserPayload,
     @Body() { userId }: CreateOneToOneChatroom,
   ) {
+    const alreadyExistingChatroom =
+      await this.chatroomService.checkChatroomExists([currentUser.id, userId]);
+    if (alreadyExistingChatroom) {
+      return new ResWrapSingleDto(
+        new CreateChatroomResDto(alreadyExistingChatroom, currentUser.id),
+      );
+    }
+
+    const users = await Promise.all(
+      [currentUser.id, userId].map((userId) =>
+        this.userService.findById(userId),
+      ),
+    );
+
     const chatroom = await this.chatroomService.createOneToOneChatroom(
       currentUser.id,
-      userId,
+      users,
     );
 
     return new ResWrapSingleDto(
@@ -56,6 +70,17 @@ export class ChatroomController {
     @ReqUser() currentUser: IUserPayload,
     @Body() { userIds }: CreateGroupChatroom,
   ) {
+    const alreadyExistingChatroom =
+      await this.chatroomService.checkChatroomExists([
+        currentUser.id,
+        ...userIds,
+      ]);
+    if (alreadyExistingChatroom) {
+      return new ResWrapSingleDto(
+        new CreateChatroomResDto(alreadyExistingChatroom, currentUser.id),
+      );
+    }
+
     const users = await Promise.all(
       [currentUser.id, ...userIds].map((userId) =>
         this.userService.findById(userId),

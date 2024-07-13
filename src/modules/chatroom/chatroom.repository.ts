@@ -15,6 +15,34 @@ export class ChatroomRepository {
     },
   };
 
+  async findByUserIds(userIds: string[]) {
+    const chatrooms = await this.prisma.chatroomEntity.findMany({
+      where: {
+        AND: [
+          {
+            members: {
+              every: {
+                id: {
+                  in: userIds,
+                },
+              },
+            },
+          },
+        ],
+      },
+      include: this.chatroomQueryIncludeStatement,
+    });
+    if (chatrooms.length == 0) return null;
+
+    const matchingChatroom = chatrooms.filter(
+      (chatroom) => chatroom.members.length == userIds.length,
+    );
+
+    if (matchingChatroom.length == 0) return null;
+
+    return Chatroom.fromEntity(matchingChatroom[0]);
+  }
+
   async save(chatroom: Chatroom) {
     const memberConnect: Prisma.UserEntityCreateNestedManyWithoutChatroomsInput =
       {
