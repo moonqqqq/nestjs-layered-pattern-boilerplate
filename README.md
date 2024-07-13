@@ -52,7 +52,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 - [x] Get friend detail
 
 ## Chatrooms
-- [ ] Create chatroom [1 to 1, group]
+- [x] Create chatroom [1 to 1, group]
 - [ ] Get chatrooms
 - [ ] Enter chatroom
 
