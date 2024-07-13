@@ -21,14 +21,6 @@ export class UserProfile {
       (this.profileImage = userProfile.profileImage);
   }
 
-  toEntity() {
-    return {
-      name: this.name,
-      phoneNumber: this.phoneNumber,
-      profileImage: this.profileImage.toEntity(),
-    };
-  }
-
   static fromEntity(userProfile: {
     id: string;
     name: string;

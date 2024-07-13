@@ -22,17 +22,6 @@ export class InputFile {
       (this.createdAt = file.createdAt);
   }
 
-  toEntity() {
-    return {
-      id: this.id || null,
-      name: this.name,
-      originalName: this.originalName,
-      path: this.path,
-      size: this.size,
-      createdAt: this.createdAt,
-    };
-  }
-
   fromEntity(inputFileEntity: {
     id: string;
     name: string;

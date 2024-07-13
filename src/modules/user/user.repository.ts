@@ -15,20 +15,19 @@ export class UserRepository {
   };
 
   async create(user: User) {
-    const userEntity = user.toEntity();
-
     const createdUserProfileEntity = await this.prisma.userProfileEntity.create(
       {
         data: {
-          name: userEntity.userProfile.name,
-          phoneNumber: userEntity.userProfile.phoneNumber,
+          name: user.userProfile.name,
+          phoneNumber: user.userProfile.phoneNumber,
         },
       },
     );
 
     const createdUserEntity = await this.prisma.userEntity.create({
       data: {
-        ...userEntity,
+        loginId: user.loginId,
+        password: user.password,
         userProfile: {
           connect: {
             id: createdUserProfileEntity.id,

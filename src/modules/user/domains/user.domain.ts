@@ -25,17 +25,6 @@ export class User {
     this.updatedAt = user.updatedAt;
   }
 
-  toEntity() {
-    return {
-      id: this.id,
-      loginId: this.loginId,
-      password: this.password,
-      userProfile: this.userProfile.toEntity(),
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    };
-  }
-
   static fromEntity(userEntity: {
     id: string;
     loginId: string;
