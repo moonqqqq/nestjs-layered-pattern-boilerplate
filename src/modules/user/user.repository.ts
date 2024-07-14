@@ -1,19 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { User } from './domains/user.domain';
+import { userQueryIncludeStatement } from './types/user-entity-include.type';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  private userQueryIncludeStatement = {
-    userProfile: {
-      include: {
-        profileImage: true,
-      },
-    },
-  };
-
+  // TODO: change to save()
   async create(user: User) {
     const createdUserProfileEntity = await this.prisma.userProfileEntity.create(
       {
@@ -34,7 +28,7 @@ export class UserRepository {
           },
         },
       },
-      include: this.userQueryIncludeStatement,
+      include: userQueryIncludeStatement,
     });
 
     return User.fromEntity(createdUserEntity);
@@ -45,7 +39,7 @@ export class UserRepository {
       where: {
         loginId,
       },
-      include: this.userQueryIncludeStatement,
+      include: userQueryIncludeStatement,
     });
 
     return User.fromEntity(userEntity);
@@ -66,7 +60,7 @@ export class UserRepository {
       where: {
         id,
       },
-      include: this.userQueryIncludeStatement,
+      include: userQueryIncludeStatement,
     });
 
     if (!userEntity) return null;
@@ -83,7 +77,7 @@ export class UserRepository {
           },
         },
       },
-      include: this.userQueryIncludeStatement,
+      include: userQueryIncludeStatement,
     });
 
     return userEntities.map((userEntity) => User.fromEntity(userEntity));

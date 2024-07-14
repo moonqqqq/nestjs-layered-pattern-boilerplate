@@ -2,20 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../share-modules/database/prisma/prisma.service';
 import { StickerChatMessage } from '../domains/sticker-chat-message.domain';
-
-const stickerChatMessageQueryIncludeStatement = {
-  chatroom: true,
-  sticker: {
-    include: {
-      file: true,
-    },
-  },
-  user: {
-    include: {
-      userProfile: true,
-    },
-  },
-} as const;
+import {
+  TStickerChatMessageQueryIncludeStatement,
+  stickerChatMessageQueryIncludeStatement,
+} from '../types/sticker-message-entity-include.type';
 
 @Injectable()
 export class StickerChatMessageRepository {
@@ -41,10 +31,7 @@ export class StickerChatMessageRepository {
       },
     };
 
-    let stickerChatMessageEntity: Prisma.ChatMessageEntityGetPayload<{
-      include: typeof stickerChatMessageQueryIncludeStatement;
-    }>;
-
+    let stickerChatMessageEntity: TStickerChatMessageQueryIncludeStatement;
     if (stickerChatMessage.getChatMessageId()) {
       // update
       stickerChatMessageEntity = await this.prisma.chatMessageEntity.update({

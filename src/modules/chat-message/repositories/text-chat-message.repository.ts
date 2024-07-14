@@ -2,24 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../share-modules/database/prisma/prisma.service';
 import { TextChatMessage } from '../domains/text-chat-message.domain';
-
-const textChatMessageQueryIncludeStatement = {
-  chatroom: true,
-  taggedUsers: {
-    include: {
-      user: {
-        include: {
-          userProfile: true,
-        },
-      },
-    },
-  },
-  user: {
-    include: {
-      userProfile: true,
-    },
-  },
-} as const;
+import {
+  TTextMessageQueryIncludeStatement,
+  textMessageQueryIncludeStatement,
+} from '../types/text-message-entity-include.type';
 
 @Injectable()
 export class TextChatMessageRepository {
@@ -54,11 +40,8 @@ export class TextChatMessageRepository {
       };
     }
 
-    let textChatMessageEntity: Prisma.ChatMessageEntityGetPayload<{
-      include: typeof textChatMessageQueryIncludeStatement;
-    }>;
-
-    // create or Update
+    // create or update
+    let textChatMessageEntity: TTextMessageQueryIncludeStatement;
     if (textChatMessage.getChatMessageId()) {
       // update
       textChatMessageEntity = await this.prisma.chatMessageEntity.update({
@@ -66,13 +49,13 @@ export class TextChatMessageRepository {
           id: textChatMessage.getChatMessageId(),
         },
         data: textChatMessageInput,
-        include: textChatMessageQueryIncludeStatement,
+        include: textMessageQueryIncludeStatement,
       });
     } else {
       // create
       textChatMessageEntity = await this.prisma.chatMessageEntity.create({
         data: textChatMessageInput,
-        include: textChatMessageQueryIncludeStatement,
+        include: textMessageQueryIncludeStatement,
       });
     }
 

@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
+import { TTextMessageQueryIncludeStatement } from '../types/text-message-entity-include.type';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
@@ -27,27 +27,7 @@ export class TextChatMessage extends ChatMessage {
     // this.referringMessage = chatMessage.referringMessage
   }
 
-  static fromEntity(
-    chatMessage: Prisma.ChatMessageEntityGetPayload<{
-      include: {
-        chatroom: true;
-        taggedUsers: {
-          include: {
-            user: {
-              include: {
-                userProfile: true;
-              };
-            };
-          };
-        };
-        user: {
-          include: {
-            userProfile: true;
-          };
-        };
-      };
-    }>,
-  ) {
+  static fromEntity(chatMessage: TTextMessageQueryIncludeStatement) {
     const taggedUsers =
       chatMessage?.taggedUsers.length > 0
         ? chatMessage.taggedUsers.map((taggedUser) =>

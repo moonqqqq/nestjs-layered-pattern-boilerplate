@@ -1,8 +1,8 @@
-import { Prisma } from '@prisma/client';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
 import { Sticker } from '../../sticker/domains/sticker.domain';
+import { TStickerChatMessageQueryIncludeStatement } from '../types/sticker-message-entity-include.type';
 
 export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;
@@ -22,28 +22,12 @@ export class StickerChatMessage extends ChatMessage {
     this.sticker = sticker;
   }
 
-  static fromEntity(
-    chatMessage: Prisma.ChatMessageEntityGetPayload<{
-      include: {
-        chatroom: true;
-        user: {
-          include: {
-            userProfile: true;
-          };
-        };
-        sticker: {
-          include: {
-            file: true;
-          };
-        };
-      };
-    }>,
-  ) {
+  static fromEntity(chatMessage: TStickerChatMessageQueryIncludeStatement) {
     return new StickerChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
       type: chatMessage.type,
-      sticker: new Sticker(chatMessage.sticker),
+      sticker: Sticker.fromEntity(chatMessage.sticker),
       user: User.fromEntity(chatMessage.user),
     });
   }

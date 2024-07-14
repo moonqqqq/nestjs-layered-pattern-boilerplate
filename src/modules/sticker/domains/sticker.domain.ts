@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { InputFile } from '../../upload/domains/file.domain';
+import { TStickerQueryIncludeStatement } from '../types/sticker-entity-include.type';
 
 export class Sticker {
   readonly id?: string;
@@ -22,13 +22,7 @@ export class Sticker {
     this.updatedAt = sticker.updatedAt;
   }
 
-  static fromEntity(
-    _stickerEntity: Prisma.StickerEntityGetPayload<{
-      include: {
-        file: true;
-      };
-    }>,
-  ) {
+  static fromEntity(_stickerEntity: TStickerQueryIncludeStatement) {
     const { file: fileEntity, ...stickerEntity } = _stickerEntity;
 
     let file: InputFile;
