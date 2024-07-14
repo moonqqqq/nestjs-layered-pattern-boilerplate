@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
-import { ChatMessage } from './domains/chat-message.domain';
 import { Prisma } from '@prisma/client';
+import { TextChatMessage } from './domains/text-chat-message.domain';
 
-const chatMessageQueryIncludeStatement = {
+const textChatMessageQueryIncludeStatement = {
   chatroom: true,
   user: {
     include: {
@@ -13,46 +13,46 @@ const chatMessageQueryIncludeStatement = {
 } as const;
 
 @Injectable()
-export class ChatMessageRepository {
+export class TextChatMessageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async save(chatMessage: ChatMessage) {
-    const chatMessageInput: Prisma.ChatMessageEntityCreateInput = {
+  async save(textChatMessage: TextChatMessage) {
+    const textChatMessageInput: Prisma.ChatMessageEntityCreateInput = {
       chatroom: {
         connect: {
-          id: chatMessage.chatroomId,
+          id: textChatMessage.chatroomId,
         },
       },
-      type: chatMessage.type,
-      content: chatMessage.content,
+      type: textChatMessage.type,
+      content: textChatMessage.content,
       user: {
         connect: {
-          id: chatMessage.user.id,
+          id: textChatMessage.user.id,
         },
       },
     };
 
-    let chatMessageEntity: Prisma.ChatMessageEntityGetPayload<{
-      include: typeof chatMessageQueryIncludeStatement;
+    let textChatMessageEntity: Prisma.ChatMessageEntityGetPayload<{
+      include: typeof textChatMessageQueryIncludeStatement;
     }>;
 
-    if (chatMessage.getChatMessageId()) {
+    if (textChatMessage.getChatMessageId()) {
       // update
-      chatMessageEntity = await this.prisma.chatMessageEntity.update({
+      textChatMessageEntity = await this.prisma.chatMessageEntity.update({
         where: {
-          id: chatMessage.getChatMessageId(),
+          id: textChatMessage.getChatMessageId(),
         },
-        data: chatMessageInput,
-        include: chatMessageQueryIncludeStatement,
+        data: textChatMessageInput,
+        include: textChatMessageQueryIncludeStatement,
       });
     } else {
       // create
-      chatMessageEntity = await this.prisma.chatMessageEntity.create({
-        data: chatMessageInput,
-        include: chatMessageQueryIncludeStatement,
+      textChatMessageEntity = await this.prisma.chatMessageEntity.create({
+        data: textChatMessageInput,
+        include: textChatMessageQueryIncludeStatement,
       });
     }
 
-    return ChatMessage.fromEntity(chatMessageEntity);
+    return TextChatMessage.fromEntity(textChatMessageEntity);
   }
 }

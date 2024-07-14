@@ -13,11 +13,11 @@ import { JwtAuthGuard } from '../../nestjs-utils/guards/jwt-auth.guard';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
-import { CreateChatMessageBodyDto } from './dtos/create-chat-message-body.dto';
+import { TextCreateChatMessageBodyDto } from './dtos/text-create-chat-message-body.dto';
 import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';
 import { ChatroomService } from '../chatroom/chatroom.service';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
-import { ChatMessageResDto } from './dtos/chat-message-res.dto';
+import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -31,11 +31,11 @@ export class ChatMessageController {
   @Post('text')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKListResponse(ChatMessageResDto)
+  @ApiOKListResponse(TextChatMessageResDto)
   @HttpCode(HttpStatus.OK)
   async createGroupChatroom(
     @ReqUser() currentUser: IUserPayload,
-    @Body() { chatroomId, content }: CreateChatMessageBodyDto,
+    @Body() { chatroomId, content }: TextCreateChatMessageBodyDto,
   ) {
     const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
 
@@ -47,11 +47,11 @@ export class ChatMessageController {
       .find((member) => member.getUserId() == currentUser.id);
     const chatroomData = { chatroomId, content };
 
-    const chatMessage = await this.chatMessageService.createTextChatMessage(
+    const textChatMessage = await this.chatMessageService.createTextChatMessage(
       sender,
       chatroomData,
     );
 
-    return new ResWrapSingleDto(new ChatMessageResDto(chatMessage));
+    return new ResWrapSingleDto(new TextChatMessageResDto(textChatMessage));
   }
 }

@@ -4,17 +4,17 @@ import {
   CHAT_MESSAGE_KIND,
   TCHAT_MESSAGE_KIND,
 } from '../constants/chat-message.constant';
-import { ChatMessage } from '../domains/chat-message.domain';
+import { TextChatMessage } from '../domains/text-chat-message.domain';
 import { User } from '../../user/domains/user.domain';
 
-export class ChatMessageResDto {
+export class TextChatMessageResDto {
   @Exclude() private readonly _id: string;
   @Exclude() private readonly _chatroomId: string;
   @Exclude() private readonly _type: TCHAT_MESSAGE_KIND;
   @Exclude() private readonly _content: string;
   @Exclude() private readonly _sender: User;
 
-  constructor(chatMessage: ChatMessage) {
+  constructor(chatMessage: TextChatMessage) {
     this._id = chatMessage.id;
     this._type = chatMessage.type;
     this._content = chatMessage.content;
