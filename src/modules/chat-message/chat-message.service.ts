@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { TextChatMessageRepository } from './chat-message.repository';
 import { CHAT_MESSAGE_KIND } from './constants/chat-message.constant';
 import { User } from '../user/domains/user.domain';
 import { TextChatMessage } from './domains/text-chat-message.domain';
 import { StickerChatMessage } from './domains/sticker-chat-message.domain';
 
-import { StickerChatMessageRepository } from './sticker-chat-message.repository';
 import { WrongInputId } from '../../nestjs-utils/exceptions/service-layer.exception';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { StickerRepository } from '../sticker/sticker.repository';
+import { TextChatMessageRepository } from './repositories/text-chat-message.repository';
+import { StickerChatMessageRepository } from './repositories/sticker-chat-message.repository';
 
 @Injectable()
 export class ChatMessageService {

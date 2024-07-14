@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { TextChatMessage } from './domains/text-chat-message.domain';
+import { PrismaService } from '../../../share-modules/database/prisma/prisma.service';
+import { TextChatMessage } from '../domains/text-chat-message.domain';
 
 const textChatMessageQueryIncludeStatement = {
   chatroom: true,

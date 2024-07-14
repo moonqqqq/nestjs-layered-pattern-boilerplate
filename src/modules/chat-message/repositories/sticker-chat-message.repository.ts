@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { StickerChatMessage } from './domains/sticker-chat-message.domain';
+import { PrismaService } from '../../../share-modules/database/prisma/prisma.service';
+import { StickerChatMessage } from '../domains/sticker-chat-message.domain';
 
 const stickerChatMessageQueryIncludeStatement = {
   chatroom: true,
