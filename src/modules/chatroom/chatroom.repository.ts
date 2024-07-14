@@ -15,6 +15,19 @@ export class ChatroomRepository {
     },
   };
 
+  async findById(chatroomId: string) {
+    const chatroomEntity = await this.prisma.chatroomEntity.findFirst({
+      where: {
+        id: chatroomId,
+      },
+      include: this.chatroomQueryIncludeStatement,
+    });
+
+    if (chatroomEntity) return Chatroom.fromEntity(chatroomEntity);
+
+    return null;
+  }
+
   async getChatroomsByUserId(userId: string) {
     const chatroomEntities = await this.prisma.chatroomEntity.findMany({
       where: {

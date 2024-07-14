@@ -6,6 +6,7 @@ export const BAD_INPUT_ERROR_CODE = {
   DUPLICATE_LOGIN_ID: 'DUPLICATE_LOGIN_ID',
   WRONG_USER_ID: 'WRONG_USER_ID',
   WRONG_FRIEND_ID: 'WRONG_USER_ID',
+  WRONG_CHATROOM_ID: 'WRONG_CHATROOM_ID',
 } as const;
 
 export const BadInputErrorBody: Record<
@@ -31,5 +32,9 @@ export const BadInputErrorBody: Record<
   WRONG_FRIEND_ID: {
     errorCode: BAD_INPUT_ERROR_CODE.WRONG_FRIEND_ID,
     message: 'Wrong friend id',
+  },
+  WRONG_CHATROOM_ID: {
+    errorCode: BAD_INPUT_ERROR_CODE.WRONG_CHATROOM_ID,
+    message: 'Wrong chatroom id',
   },
 } as const;

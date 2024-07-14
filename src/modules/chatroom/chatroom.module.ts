@@ -8,5 +8,6 @@ import { UserModule } from '../user/user.module';
   imports: [UserModule],
   controllers: [ChatroomController],
   providers: [ChatroomService, ChatroomRepository],
+  exports: [ChatroomService],
 })
 export class ChatroomModule {}

@@ -15,7 +15,7 @@ model UserEntity {
   password  String
 
   chatrooms  ChatroomEntity[]
-  messages  MessageEntity[]
+  messages  ChatMessageEntity[]
   taggedMessages  TaggedUserEntity[]
   friends       FriendRelationEntity[]  @relation("UserFriends")
   friendOf      FriendRelationEntity[]  @relation("FriendOf")
@@ -65,7 +65,7 @@ model ChatroomEntity {
   members   UserEntity[]
   masterUserId  String
 
-  messages  MessageEntity[]
+  messages  ChatMessageEntity[]
 
   chatroomImageId  String? @unique
   chatroomImage    InputFileEntity? @relation(fields: [chatroomImageId], references: [id])
@@ -90,7 +90,7 @@ enum MessageType {
 model StickerEntity {
   id        String          @id @default(uuid())
   name      String
-  messages  MessageEntity[]
+  messages  ChatMessageEntity[]
 
   fileId  String? @unique
   file    InputFileEntity? @relation(fields: [fileId], references: [id])
@@ -98,7 +98,7 @@ model StickerEntity {
   @@map("Sticker")
 }
 
-model MessageEntity {
+model ChatMessageEntity {
   id        String          @id @default(uuid())
   type          MessageType @default(TEXT)
   content      String
@@ -117,9 +117,9 @@ model MessageEntity {
 
   // Self relation
   referringMessageId  String? @unique
-  referringMessage    MessageEntity? @relation("ReferringMessage", fields: [referringMessageId], references: [id])
+  referringMessage    ChatMessageEntity? @relation("ReferringMessage", fields: [referringMessageId], references: [id])
   // this is only for prisma requirement of self relation
-  symmetricMessage     MessageEntity? @relation("ReferringMessage")  
+  symmetricMessage     ChatMessageEntity? @relation("ReferringMessage")  
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -131,7 +131,7 @@ model MessageEntity {
 model TaggedUserEntity {
   id        String          @id @default(uuid())
   messageId String
-  message   MessageEntity   @relation(fields: [messageId], references: [id])
+  message   ChatMessageEntity   @relation(fields: [messageId], references: [id])
   userId    String
   user      UserEntity      @relation(fields: [userId], references: [id])
 
@@ -144,7 +144,7 @@ model EmojiReactionEntity {
   emogiReactionType  EmojiReacitonType
 
   messageId String
-  message  MessageEntity   @relation(fields: [messageId], references: [id])
+  message  ChatMessageEntity   @relation(fields: [messageId], references: [id])
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

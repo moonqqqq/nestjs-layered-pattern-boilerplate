@@ -12,6 +12,10 @@ export class ChatroomService {
     private readonly userRepository: UserRepository,
   ) {}
 
+  async getChatroomById(chatroomId: string) {
+    return await this.chatroomRepository.findById(chatroomId);
+  }
+
   async checkChatroomExists(userIds: string[]) {
     return await this.chatroomRepository.findByUserIds(userIds);
   }

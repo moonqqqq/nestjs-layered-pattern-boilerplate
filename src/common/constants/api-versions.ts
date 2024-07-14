@@ -11,4 +11,5 @@ export const API_ENDPOINT = {
   COMPANY: 'company',
   FRIEND: 'friend',
   CHATROOM: 'chatroom',
+  CHAT_MESSAGE: 'chat-message',
 } as const;

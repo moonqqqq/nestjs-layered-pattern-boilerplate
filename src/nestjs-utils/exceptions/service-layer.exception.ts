@@ -37,6 +37,7 @@ export class WrongBusinessCertificateFileIdNumber extends BadInputException {}
 export class WrongProjectId extends BadInputException {}
 export class WrongUserId extends BadInputException {}
 export class WrongFriendId extends BadInputException {}
+export class WrongInputId extends BadInputException {}
 
 /**
  * Conflict
