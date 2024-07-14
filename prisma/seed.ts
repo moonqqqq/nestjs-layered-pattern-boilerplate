@@ -14,6 +14,8 @@ async function main() {
       }),
     ),
   );
+  // eslint-disable-next-line no-console
+  console.log('Seeding Done - added: [users]');
 }
 
 main()
