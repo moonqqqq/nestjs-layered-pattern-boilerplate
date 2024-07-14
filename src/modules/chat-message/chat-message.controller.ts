@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../../nestjs-utils/guards/jwt-auth.guard';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
 import { IUserPayload } from '../../common/dtos/user-payload.dto';
-import { TextCreateChatMessageBodyDto } from './dtos/text-create-chat-message-body.dto';
+import { TextCreateChatMessageBodyDto } from './dtos/create-text-chat-message-body.dto';
 import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';
 import { ChatroomService } from '../chatroom/chatroom.service';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
