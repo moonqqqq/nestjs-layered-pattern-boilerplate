@@ -13,10 +13,6 @@ export class StickerChatMessage extends ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly sticker: Sticker;
     readonly user: User;
-    //   readonly sticker?: Sticker;
-    //   readonly emojiReactions?: EmojiReaction[];
-    //   readonly taggedUsers?: User[];
-    //   readonly referringMessage?: ChatMessage[];
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {

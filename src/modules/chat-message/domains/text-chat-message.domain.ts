@@ -5,6 +5,8 @@ import { ChatMessage } from './chat-message.domain';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
+  //   readonly taggedUsers?: User[];
+  //   readonly referringMessage?: ChatMessage[];
 
   constructor(chatMessage: {
     readonly id?: string;
@@ -12,17 +14,17 @@ export class TextChatMessage extends ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly content: string;
     readonly user: User;
-    //   readonly sticker?: Sticker;
-    //   readonly emojiReactions?: EmojiReaction[];
     //   readonly taggedUsers?: User[];
     //   readonly referringMessage?: ChatMessage[];
+
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
     const { content, ...baseChatMessage } = chatMessage;
-
     super(baseChatMessage);
     this.content = content;
+    // this.taggedUsers = chatMessage.taggedUsers
+    // this.referringMessage = chatMessage.referringMessage
   }
 
   static fromEntity(
