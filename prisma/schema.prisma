@@ -16,7 +16,7 @@ model UserEntity {
 
   chatrooms  ChatroomEntity[]
   messages  ChatMessageEntity[]
-  taggedMessages  TaggedUserEntity[]
+  // taggedMessages  TaggedUserEntity[]
   friends       FriendRelationEntity[]  @relation("UserFriends")
   friendOf      FriendRelationEntity[]  @relation("FriendOf")
 
@@ -113,7 +113,8 @@ model ChatMessageEntity {
   sticker       StickerEntity?   @relation(fields:[stickerId], references: [id])
 
   emojiReactions EmojiReactionEntity[]
-  taggedUsers      TaggedUserEntity[]
+  //  taggedUsers      TaggedUserEntity[]
+  taggedUserIds   Json?
 
   // Self relation
   referringMessageId  String? @unique
@@ -128,15 +129,15 @@ model ChatMessageEntity {
 }
 
 
-model TaggedUserEntity {
-  id        String          @id @default(uuid())
-  messageId String
-  message   ChatMessageEntity   @relation(fields: [messageId], references: [id])
-  userId    String
-  user      UserEntity      @relation(fields: [userId], references: [id])
-
-  @@map("TaggedUser")
-}
+//model TaggedUserEntity {
+//  id        String          @id @default(uuid())
+//  messageId String
+//  message   ChatMessageEntity   @relation(fields: [messageId], references: [id])
+//  userId    String
+//  user      UserEntity      @relation(fields: [userId], references: [id])
+//
+//  @@map("TaggedUser")
+//}
 
 model EmojiReactionEntity {
   id        String          @id @default(uuid())

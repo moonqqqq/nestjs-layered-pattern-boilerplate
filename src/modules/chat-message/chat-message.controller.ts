@@ -54,6 +54,9 @@ export class ChatMessageController {
       chatroomData,
     );
 
+    // Send push notification
+    // pushManager.taggedMessage(textChatMessage)
+
     return new ResWrapSingleDto(new TextChatMessageResDto(textChatMessage));
   }
 
