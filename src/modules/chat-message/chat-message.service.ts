@@ -9,6 +9,7 @@ import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-bod
 import { StickerRepository } from '../sticker/sticker.repository';
 import { TextChatMessageRepository } from './repositories/text-chat-message.repository';
 import { StickerChatMessageRepository } from './repositories/sticker-chat-message.repository';
+import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 export class ChatMessageService {
@@ -16,11 +17,16 @@ export class ChatMessageService {
     private readonly textChatMessageRepository: TextChatMessageRepository,
     private readonly stickerChatMessageRepository: StickerChatMessageRepository,
     private readonly stickerRepository: StickerRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async createTextChatMessage(
     sender: User,
-    chatMessageData: { chatroomId: string; content: string },
+    chatMessageData: {
+      chatroomId: string;
+      content: string;
+      taggedUserIds?: string[];
+    },
   ) {
     const textChatMessage = new TextChatMessage({
       chatroomId: chatMessageData.chatroomId,
@@ -28,6 +34,15 @@ export class ChatMessageService {
       content: chatMessageData.content,
       user: sender,
     });
+
+    if (chatMessageData?.taggedUserIds?.length > 0) {
+      const taggedUsers = await Promise.all(
+        chatMessageData.taggedUserIds.map((taggedUserId) =>
+          this.userRepository.findById(taggedUserId),
+        ),
+      );
+      textChatMessage.addTaggedUsers(taggedUsers);
+    }
 
     return await this.textChatMessageRepository.save(textChatMessage);
   }

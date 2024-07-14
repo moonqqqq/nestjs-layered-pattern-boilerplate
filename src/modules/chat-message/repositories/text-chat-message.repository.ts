@@ -5,6 +5,15 @@ import { TextChatMessage } from '../domains/text-chat-message.domain';
 
 const textChatMessageQueryIncludeStatement = {
   chatroom: true,
+  taggedUsers: {
+    include: {
+      user: {
+        include: {
+          userProfile: true,
+        },
+      },
+    },
+  },
   user: {
     include: {
       userProfile: true,
@@ -32,10 +41,24 @@ export class TextChatMessageRepository {
       },
     };
 
+    // join taggedUsers
+    if (textChatMessage?.taggedUsers?.length > 0) {
+      textChatMessageInput.taggedUsers = {
+        createMany: {
+          data: textChatMessage.taggedUsers.map((taggedUser) => {
+            return {
+              userId: taggedUser.getUserId(),
+            };
+          }),
+        },
+      };
+    }
+
     let textChatMessageEntity: Prisma.ChatMessageEntityGetPayload<{
       include: typeof textChatMessageQueryIncludeStatement;
     }>;
 
+    // create or Update
     if (textChatMessage.getChatMessageId()) {
       // update
       textChatMessageEntity = await this.prisma.chatMessageEntity.update({

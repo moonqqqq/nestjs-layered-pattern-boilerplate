@@ -21,6 +21,7 @@ import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
 import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
+import { UserService } from '../user/user.service';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -28,6 +29,7 @@ export class ChatMessageController {
   constructor(
     private readonly chatMessageService: ChatMessageService,
     private readonly chatroomservice: ChatroomService,
+    private readonly userService: UserService,
   ) {}
 
   @Post('text')
@@ -37,21 +39,21 @@ export class ChatMessageController {
   @HttpCode(HttpStatus.OK)
   async createTextChatMessage(
     @ReqUser() currentUser: IUserPayload,
-    @Body() { chatroomId, content }: TextCreateChatMessageBodyDto,
+    @Body() textMessageData: TextCreateChatMessageBodyDto,
   ) {
-    const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
-
+    const chatroom = await this.chatroomservice.getChatroomById(
+      textMessageData.chatroomId,
+    );
     if (!chatroom)
       throw new BadRequestException(BadInputErrorBody.WRONG_CHATROOM_ID);
 
     const sender = chatroom
       .getMembers()
       .find((member) => member.getUserId() == currentUser.id);
-    const chatroomData = { chatroomId, content };
 
     const textChatMessage = await this.chatMessageService.createTextChatMessage(
       sender,
-      chatroomData,
+      textMessageData,
     );
 
     return new ResWrapSingleDto(new TextChatMessageResDto(textChatMessage));

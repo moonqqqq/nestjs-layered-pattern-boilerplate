@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import {
   CHAT_MESSAGE_KIND,
@@ -6,6 +6,7 @@ import {
 } from '../constants/chat-message.constant';
 import { TextChatMessage } from '../domains/text-chat-message.domain';
 import { User } from '../../user/domains/user.domain';
+import { TaggedUserResDto } from './tagged-user-res.dto';
 
 export class TextChatMessageResDto {
   @Exclude() private readonly _id: string;
@@ -13,6 +14,7 @@ export class TextChatMessageResDto {
   @Exclude() private readonly _type: TCHAT_MESSAGE_KIND;
   @Exclude() private readonly _content: string;
   @Exclude() private readonly _sender: User;
+  @Exclude() private readonly _taggedUsers?: User[];
 
   constructor(chatMessage: TextChatMessage) {
     this._id = chatMessage.id;
@@ -20,6 +22,7 @@ export class TextChatMessageResDto {
     this._content = chatMessage.content;
     this._sender = chatMessage.user;
     this._chatroomId = chatMessage.chatroomId;
+    this._taggedUsers = chatMessage.taggedUsers;
   }
 
   @ApiProperty({ example: '6a35589c-3e8c-4fd9-bda2-620d421dd5b9' })
@@ -50,5 +53,13 @@ export class TextChatMessageResDto {
   @Expose()
   get senderId(): string {
     return this._sender.getUserId();
+  }
+
+  @ApiPropertyOptional()
+  @Expose()
+  get taggedUsers(): TaggedUserResDto[] {
+    if (this._taggedUsers?.length > 0) {
+      return this._taggedUsers.map((member) => new TaggedUserResDto(member));
+    }
   }
 }
