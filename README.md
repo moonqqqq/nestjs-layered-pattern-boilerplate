@@ -58,13 +58,20 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 - [ ] Enter chatroom - after implements the socketio feature
 
 ## Chat messsage
-- [ ] Get chat messages
 - [ ] Send chat message
-    - [ ] base chat-message - text only content
-    - [ ] referencing past message
-    - [ ] send attachment together
-    - [ ] tag user on a message
-    - [ ] sticker message
+    - [x] text chat-message
+        - [ ] tagged user on a message
+        - [ ] referencing past message
+        - [ ] send attachment together
+    - [x] sticker chat-message
+    - [ ] emoji reaction
+        - [ ] send
+        - [ ] cancel
+- [ ] Get chat messages
+    - [ ] with emoji reactions
+    - [ ] with tagged user
+    - [ ] with referencing past message
+    - [ ] with attachment
 - [ ] set emoji reaction on a message (? do I seprate emoji reaction from chat message module?)
 - [ ] cancel emoji reaction on a message
 
