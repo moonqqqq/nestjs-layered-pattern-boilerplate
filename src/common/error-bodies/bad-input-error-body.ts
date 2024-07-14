@@ -7,6 +7,7 @@ export const BAD_INPUT_ERROR_CODE = {
   WRONG_USER_ID: 'WRONG_USER_ID',
   WRONG_FRIEND_ID: 'WRONG_USER_ID',
   WRONG_CHATROOM_ID: 'WRONG_CHATROOM_ID',
+  WRONG_STICKER_ID: 'WRONG_STICKER_ID',
 } as const;
 
 export const BadInputErrorBody: Record<
@@ -36,5 +37,9 @@ export const BadInputErrorBody: Record<
   WRONG_CHATROOM_ID: {
     errorCode: BAD_INPUT_ERROR_CODE.WRONG_CHATROOM_ID,
     message: 'Wrong chatroom id',
+  },
+  WRONG_STICKER_ID: {
+    errorCode: BAD_INPUT_ERROR_CODE.WRONG_STICKER_ID,
+    message: 'Wrong sticker id',
   },
 } as const;

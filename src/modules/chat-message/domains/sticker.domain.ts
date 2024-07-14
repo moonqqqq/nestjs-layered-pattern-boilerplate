@@ -39,4 +39,8 @@ export class Sticker {
       file,
     });
   }
+
+  getId() {
+    return this.id;
+  }
 }

@@ -22,10 +22,10 @@ export class InputFile {
       (this.createdAt = file.createdAt);
   }
 
-  fromEntity(inputFileEntity: {
+  static fromEntity(inputFileEntity: {
     id: string;
     name: string;
-    originamName: string;
+    originalName: string;
     path: string;
     size: string;
     createdAt: Date;
@@ -33,7 +33,7 @@ export class InputFile {
     return new InputFile({
       id: inputFileEntity.id,
       name: inputFileEntity.name,
-      originalName: inputFileEntity.originamName,
+      originalName: inputFileEntity.originalName,
       path: inputFileEntity.path,
       size: inputFileEntity.size,
       createdAt: inputFileEntity.createdAt,

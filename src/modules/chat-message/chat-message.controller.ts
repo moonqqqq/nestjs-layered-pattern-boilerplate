@@ -19,6 +19,8 @@ import { ChatroomService } from '../chatroom/chatroom.service';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
+import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
+import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -33,7 +35,7 @@ export class ChatMessageController {
   @UseGuards(JwtAuthGuard)
   @ApiOKListResponse(TextChatMessageResDto)
   @HttpCode(HttpStatus.OK)
-  async createGroupChatroom(
+  async createTextChatMessage(
     @ReqUser() currentUser: IUserPayload,
     @Body() { chatroomId, content }: TextCreateChatMessageBodyDto,
   ) {
@@ -53,5 +55,35 @@ export class ChatMessageController {
     );
 
     return new ResWrapSingleDto(new TextChatMessageResDto(textChatMessage));
+  }
+
+  @Post('sticker')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOKListResponse(StickerChatMessageResDto)
+  @HttpCode(HttpStatus.OK)
+  async createStickerChatMessage(
+    @ReqUser() currentUser: IUserPayload,
+    @Body() { chatroomId, stickerId }: CreateStickerChatMessageBodyDto,
+  ) {
+    const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
+
+    if (!chatroom)
+      throw new BadRequestException(BadInputErrorBody.WRONG_CHATROOM_ID);
+
+    const sender = chatroom
+      .getMembers()
+      .find((member) => member.getUserId() == currentUser.id);
+    const chatroomData = { chatroomId, stickerId };
+
+    const stickerChatMessage =
+      await this.chatMessageService.createStickerChatMessage(
+        sender,
+        chatroomData,
+      );
+
+    return new ResWrapSingleDto(
+      new StickerChatMessageResDto(stickerChatMessage),
+    );
   }
 }

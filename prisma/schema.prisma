@@ -101,7 +101,7 @@ model StickerEntity {
 model ChatMessageEntity {
   id        String          @id @default(uuid())
   type          MessageType @default(TEXT)
-  content      String
+  content      String?
 
   chatroomId String
   chatroom  ChatroomEntity   @relation(fields: [chatroomId], references: [id])

@@ -1,9 +1,10 @@
+import { Prisma } from '@prisma/client';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
 import { Sticker } from './sticker.domain';
 
-export class TextChatMessage extends ChatMessage {
+export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;
 
   constructor(chatMessage: {
@@ -23,6 +24,32 @@ export class TextChatMessage extends ChatMessage {
 
     super(baseChatMessage);
     this.sticker = sticker;
+  }
+
+  static fromEntity(
+    chatMessage: Prisma.ChatMessageEntityGetPayload<{
+      include: {
+        chatroom: true;
+        user: {
+          include: {
+            userProfile: true;
+          };
+        };
+        sticker: {
+          include: {
+            file: true;
+          };
+        };
+      };
+    }>,
+  ) {
+    return new StickerChatMessage({
+      id: chatMessage.id,
+      chatroomId: chatMessage.chatroom.id,
+      type: chatMessage.type,
+      sticker: new Sticker(chatMessage.sticker),
+      user: User.fromEntity(chatMessage.user),
+    });
   }
 
   getSticker() {
