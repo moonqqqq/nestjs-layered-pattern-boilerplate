@@ -6,8 +6,8 @@ import {
 } from '../constants/chat-message.constant';
 import { User } from '../../user/domains/user.domain';
 import { StickerChatMessage } from '../domains/sticker-chat-message.domain';
-import { Sticker } from '../domains/sticker.domain';
-import { StickerResDto } from './sticker-res.dto';
+import { Sticker } from '../../sticker/domains/sticker.domain';
+import { StickerResDto } from '../../sticker/dtos/sticker-res.dto';
 
 export class StickerChatMessageResDto {
   @Exclude() private readonly _id: string;

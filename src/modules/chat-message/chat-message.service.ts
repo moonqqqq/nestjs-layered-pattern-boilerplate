@@ -4,10 +4,11 @@ import { CHAT_MESSAGE_KIND } from './constants/chat-message.constant';
 import { User } from '../user/domains/user.domain';
 import { TextChatMessage } from './domains/text-chat-message.domain';
 import { StickerChatMessage } from './domains/sticker-chat-message.domain';
-import { StickerRepository } from './sticker.repository';
+
 import { StickerChatMessageRepository } from './sticker-chat-message.repository';
 import { WrongInputId } from '../../nestjs-utils/exceptions/service-layer.exception';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
+import { StickerRepository } from '../sticker/sticker.repository';
 
 @Injectable()
 export class ChatMessageService {

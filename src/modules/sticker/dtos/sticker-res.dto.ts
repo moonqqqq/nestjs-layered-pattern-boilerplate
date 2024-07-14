@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { CHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { Sticker } from '../domains/sticker.domain';
 import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
 import { InputFile } from '../../upload/domains/file.domain';
@@ -28,7 +27,7 @@ export class StickerResDto {
     return this._name;
   }
 
-  @ApiProperty({ example: CHAT_MESSAGE_KIND.STICKER })
+  @ApiProperty()
   @Expose()
   get file(): InputFileResDto {
     return new InputFileResDto(this._file);

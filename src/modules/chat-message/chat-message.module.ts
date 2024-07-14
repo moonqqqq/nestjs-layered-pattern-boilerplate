@@ -5,17 +5,16 @@ import { TextChatMessageRepository } from './chat-message.repository';
 import { UserModule } from '../user/user.module';
 import { ChatroomModule } from '../chatroom/chatroom.module';
 import { UploadModule } from '../upload/upload.module';
-import { StickerRepository } from './sticker.repository';
 import { StickerChatMessageRepository } from './sticker-chat-message.repository';
+import { StickerModule } from '../sticker/sticker.module';
 
 @Module({
-  imports: [UserModule, ChatroomModule, UploadModule],
+  imports: [UserModule, ChatroomModule, UploadModule, StickerModule],
   controllers: [ChatMessageController],
   providers: [
     ChatMessageService,
     TextChatMessageRepository,
     StickerChatMessageRepository,
-    StickerRepository,
   ],
 })
 export class ChatMessageModule {}

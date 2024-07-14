@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
-import { Sticker } from './sticker.domain';
+import { Sticker } from '../../sticker/domains/sticker.domain';
 
 export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;

@@ -20,6 +20,7 @@ import { UserProfileModule } from './modules/user-profile/user-profile.module';
 import { FriendsModule } from './modules/friend/friend-relation.module';
 import { ChatroomModule } from './modules/chatroom/chatroom.module';
 import { ChatMessageModule } from './modules/chat-message/chat-message.module';
+import { StickerModule } from './modules/sticker/sticker.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ChatMessageModule } from './modules/chat-message/chat-message.module';
     FriendsModule,
     ChatroomModule,
     ChatMessageModule,
+    StickerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
