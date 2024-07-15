@@ -14,7 +14,7 @@ export class StickerChatMessage extends ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly sticker: Sticker;
     readonly user: User;
-    readonly referringChatMessage?: ReferringChatMessage;
+    // readonly referringChatMessage?: ReferringChatMessage;
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
@@ -25,18 +25,22 @@ export class StickerChatMessage extends ChatMessage {
   }
 
   static fromEntity(chatMessage: TChatMessageQueryIncludeStatement) {
-    const referringChatMessage = chatMessage.referringChatMessage
-      ? ReferringChatMessage.fromEntity(chatMessage.referringChatMessage)
-      : null;
-
-    return new StickerChatMessage({
+    const stickerChatMessage = new StickerChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
       type: chatMessage.type,
       sticker: Sticker.fromEntity(chatMessage.sticker),
       user: User.fromEntity(chatMessage.user),
-      referringChatMessage,
     });
+
+    if (chatMessage.referringChatMessage) {
+      const referringChatMessage = ReferringChatMessage.fromEntity(
+        chatMessage.referringChatMessage,
+      );
+      stickerChatMessage.setReferringChatMessage(referringChatMessage);
+    }
+
+    return stickerChatMessage;
   }
 
   getSticker() {

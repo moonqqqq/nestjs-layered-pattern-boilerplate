@@ -38,4 +38,8 @@ export class ChatMessage {
   getType() {
     return this.type;
   }
+
+  setReferringChatMessage(referringChatMessage: ReferringChatMessage) {
+    this.referringChatMessage = referringChatMessage;
+  }
 }

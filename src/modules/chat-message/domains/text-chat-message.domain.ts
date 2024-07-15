@@ -16,8 +16,6 @@ export class TextChatMessage extends ChatMessage {
     readonly content: string;
     readonly user: User;
     readonly taggedUsers?: User[];
-    readonly referringChatMessage?: ReferringChatMessage;
-
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
@@ -35,19 +33,24 @@ export class TextChatMessage extends ChatMessage {
           )
         : null;
 
-    const referringChatMessage = chatMessage.referringChatMessage
-      ? ReferringChatMessage.fromEntity(chatMessage.referringChatMessage)
-      : null;
-
-    return new TextChatMessage({
+    const textChatMessage = new TextChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
       type: chatMessage.type,
       content: chatMessage.content,
       user: User.fromEntity(chatMessage.user),
       taggedUsers,
-      referringChatMessage,
     });
+
+    if (chatMessage.referringChatMessage) {
+      const referringChatMessage = chatMessage.referringChatMessage
+        ? ReferringChatMessage.fromEntity(chatMessage.referringChatMessage)
+        : null;
+
+      textChatMessage.setReferringChatMessage(referringChatMessage);
+    }
+
+    return textChatMessage;
   }
 
   getContent() {
