@@ -9,6 +9,7 @@ import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-bod
 import { StickerRepository } from '../sticker/sticker.repository';
 import { UserRepository } from '../user/user.repository';
 import { ChatMessageRepository } from './repositories/chat-message.repository';
+import { ReferringChatMessage } from './domains/referring-chat-message.domain';
 
 @Injectable()
 export class ChatMessageService {
@@ -24,13 +25,23 @@ export class ChatMessageService {
       chatroomId: string;
       content: string;
       taggedUserIds?: string[];
+      referringChatMessageId: string;
     },
   ) {
+    let referringChatMessage: ReferringChatMessage;
+    if (chatMessageData.referringChatMessageId) {
+      referringChatMessage =
+        await this.chatMessageRepository.getReferringChatMessageById(
+          chatMessageData.referringChatMessageId,
+        );
+    }
+
     const textChatMessage = new TextChatMessage({
       chatroomId: chatMessageData.chatroomId,
       type: CHAT_MESSAGE_KIND.TEXT,
       content: chatMessageData.content,
       user: sender,
+      referringMessage: referringChatMessage,
     });
 
     if (chatMessageData?.taggedUserIds?.length > 0) {

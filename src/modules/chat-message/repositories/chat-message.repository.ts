@@ -8,10 +8,39 @@ import {
   TChatMessageQueryIncludeStatement,
   chatMessageQueryIncludeStatement,
 } from '../types/chat-message-entity-include.type';
+import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 
 @Injectable()
 export class ChatMessageRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  async findById(
+    chatMessageId: string,
+  ): Promise<TextChatMessage | StickerChatMessage> {
+    const chatMessage = await this.prisma.chatMessageEntity.findFirst({
+      where: {
+        id: chatMessageId,
+      },
+      include: chatMessageQueryIncludeStatement,
+    });
+
+    return chatMessage.type === CHAT_MESSAGE_KIND.TEXT
+      ? TextChatMessage.fromEntity(chatMessage)
+      : StickerChatMessage.fromEntity(chatMessage);
+  }
+
+  async getReferringChatMessageById(
+    chatMessageId: string,
+  ): Promise<ReferringChatMessage> {
+    const chatMessage = await this.prisma.chatMessageEntity.findFirst({
+      where: {
+        id: chatMessageId,
+      },
+      include: chatMessageQueryIncludeStatement,
+    });
+
+    return ReferringChatMessage.fromEntity(chatMessage);
+  }
 
   async save<T extends TextChatMessage | StickerChatMessage>(
     chatMessage: T,
@@ -50,6 +79,14 @@ export class ChatMessageRepository {
       chatMessageInput.sticker = {
         connect: {
           id: chatMessage.sticker.getId(),
+        },
+      };
+    }
+
+    if (chatMessage.referringChatMessage) {
+      chatMessageInput.referringMessage = {
+        connect: {
+          id: chatMessage.referringChatMessage.getId(),
         },
       };
     }

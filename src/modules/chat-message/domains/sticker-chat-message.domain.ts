@@ -2,7 +2,7 @@ import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
 import { Sticker } from '../../sticker/domains/sticker.domain';
-import { TStickerChatMessageQueryIncludeStatement } from '../types/sticker-message-entity-include.type';
+import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
 
 export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;
@@ -22,7 +22,7 @@ export class StickerChatMessage extends ChatMessage {
     this.sticker = sticker;
   }
 
-  static fromEntity(chatMessage: TStickerChatMessageQueryIncludeStatement) {
+  static fromEntity(chatMessage: TChatMessageQueryIncludeStatement) {
     return new StickerChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,

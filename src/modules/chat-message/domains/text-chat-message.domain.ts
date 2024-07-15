@@ -1,7 +1,8 @@
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
-import { TTextMessageQueryIncludeStatement } from '../types/text-message-entity-include.type';
+import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
+import { ReferringChatMessage } from './referring-chat-message.domain';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
@@ -16,7 +17,7 @@ export class TextChatMessage extends ChatMessage {
     readonly content: string;
     readonly user: User;
     readonly taggedUsers?: User[];
-    //   readonly referringMessage?: ChatMessage[];
+    readonly referringMessage?: ReferringChatMessage;
 
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
@@ -25,10 +26,9 @@ export class TextChatMessage extends ChatMessage {
     super(baseChatMessage);
     this.content = content;
     this.taggedUsers = chatMessage.taggedUsers || [];
-    // this.referringMessage = chatMessage.referringMessage
   }
 
-  static fromEntity(chatMessage: TTextMessageQueryIncludeStatement) {
+  static fromEntity(chatMessage: TChatMessageQueryIncludeStatement) {
     const taggedUsers =
       chatMessage?.taggedUsers.length > 0
         ? chatMessage.taggedUsers.map((taggedUser) =>
@@ -43,6 +43,9 @@ export class TextChatMessage extends ChatMessage {
       content: chatMessage.content,
       user: User.fromEntity(chatMessage.user),
       taggedUsers,
+      referringMessage: ReferringChatMessage.fromEntity(
+        chatMessage.referringMessage,
+      ),
     });
   }
 

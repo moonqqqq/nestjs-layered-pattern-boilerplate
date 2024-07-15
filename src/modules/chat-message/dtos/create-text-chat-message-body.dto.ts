@@ -15,4 +15,9 @@ export class TextCreateChatMessageBodyDto {
   @IsString({ each: true })
   @IsOptional()
   taggedUserIds: string[];
+
+  @ApiPropertyOptional({ example: 'd28ngkldf-23nkldmklf~' })
+  @IsString()
+  @IsOptional()
+  referringChatMessageId: string;
 }
