@@ -28,9 +28,8 @@ export class ChatroomService {
     const newChatroom = new Chatroom({
       type: CHATROOM_KIND.ONE_TO_ONE,
       masterUserId: currnetUserId,
+      members,
     });
-
-    newChatroom.addMembers(members);
 
     return await this.chatroomRepository.save(newChatroom);
   }
@@ -39,9 +38,8 @@ export class ChatroomService {
     const newGroupChatroom = new Chatroom({
       type: CHATROOM_KIND.GROUP,
       masterUserId: currentUserId,
+      members,
     });
-
-    newGroupChatroom.addMembers(members);
 
     return await this.chatroomRepository.save(newGroupChatroom);
   }

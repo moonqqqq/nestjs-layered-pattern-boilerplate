@@ -9,6 +9,7 @@ import {
   chatMessageQueryIncludeStatement,
 } from '../types/chat-message-entity-include.type';
 import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
+import { referringChatMessageQueryIncludeStatement } from '../types/referring-chat-message-entity-include.type';
 
 @Injectable()
 export class ChatMessageRepository {
@@ -36,7 +37,7 @@ export class ChatMessageRepository {
       where: {
         id: chatMessageId,
       },
-      include: chatMessageQueryIncludeStatement,
+      include: referringChatMessageQueryIncludeStatement,
     });
 
     return ReferringChatMessage.fromEntity(chatMessage);
