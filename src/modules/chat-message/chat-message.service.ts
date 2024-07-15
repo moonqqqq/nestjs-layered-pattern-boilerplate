@@ -41,7 +41,7 @@ export class ChatMessageService {
       type: CHAT_MESSAGE_KIND.TEXT,
       content: chatMessageData.content,
       user: sender,
-      referringMessage: referringChatMessage,
+      referringChatMessage: referringChatMessage,
     });
 
     if (chatMessageData?.taggedUserIds?.length > 0) {

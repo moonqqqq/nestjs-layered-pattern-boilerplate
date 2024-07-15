@@ -116,10 +116,10 @@ model ChatMessageEntity {
   taggedUsers      TaggedUserEntity[]
 
   // Self relation
-  referringMessageId  String? @unique
-  referringMessage    ChatMessageEntity? @relation("ReferringMessage", fields: [referringMessageId], references: [id])
+  referringChatMessageId  String? @unique
+  referringChatMessage    ChatMessageEntity? @relation("ReferringChatMessage", fields: [referringChatMessageId], references: [id])
   // this is only for prisma requirement of self relation
-  symmetricMessage     ChatMessageEntity? @relation("ReferringMessage")  
+  symmetricMessage     ChatMessageEntity? @relation("ReferringChatMessage")  
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

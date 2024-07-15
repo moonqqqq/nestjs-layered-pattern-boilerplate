@@ -72,7 +72,7 @@ CREATE TABLE "Message" (
     "chatroomId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "stickerId" TEXT,
-    "referringMessageId" TEXT,
+    "referringChatMessageId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -107,7 +107,7 @@ CREATE TABLE "_ChatroomEntityToUserEntity" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Message_referringMessageId_key" ON "Message"("referringMessageId");
+CREATE UNIQUE INDEX "Message_referringChatMessageId_key" ON "Message"("referringChatMessageId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ChatroomEntityToUserEntity_AB_unique" ON "_ChatroomEntityToUserEntity"("A", "B");
@@ -134,7 +134,7 @@ ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Message" ADD CONSTRAINT "Message_stickerId_fkey" FOREIGN KEY ("stickerId") REFERENCES "Sticker"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_referringMessageId_fkey" FOREIGN KEY ("referringMessageId") REFERENCES "Message"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_referringChatMessageId_fkey" FOREIGN KEY ("referringChatMessageId") REFERENCES "Message"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "TaggedUser" ADD CONSTRAINT "TaggedUser_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES "Message"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

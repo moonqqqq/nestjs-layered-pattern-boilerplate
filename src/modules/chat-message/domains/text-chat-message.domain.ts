@@ -8,7 +8,6 @@ export class TextChatMessage extends ChatMessage {
   readonly content: string;
   readonly taggedUsers?: User[];
   readonly type: TCHAT_MESSAGE_KIND;
-  //   readonly referringMessage?: ChatMessage[];
 
   constructor(chatMessage: {
     readonly id?: string;
@@ -17,7 +16,7 @@ export class TextChatMessage extends ChatMessage {
     readonly content: string;
     readonly user: User;
     readonly taggedUsers?: User[];
-    readonly referringMessage?: ReferringChatMessage;
+    readonly referringChatMessage?: ReferringChatMessage;
 
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
@@ -36,6 +35,10 @@ export class TextChatMessage extends ChatMessage {
           )
         : null;
 
+    const referringChatMessage = chatMessage.referringChatMessage
+      ? ReferringChatMessage.fromEntity(chatMessage.referringChatMessage)
+      : null;
+
     return new TextChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
@@ -43,9 +46,7 @@ export class TextChatMessage extends ChatMessage {
       content: chatMessage.content,
       user: User.fromEntity(chatMessage.user),
       taggedUsers,
-      referringMessage: ReferringChatMessage.fromEntity(
-        chatMessage.referringMessage,
-      ),
+      referringChatMessage,
     });
   }
 

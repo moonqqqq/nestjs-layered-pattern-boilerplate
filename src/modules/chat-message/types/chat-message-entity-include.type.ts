@@ -23,7 +23,7 @@ export const chatMessageQueryIncludeStatement = {
       ...userQueryIncludeStatement,
     },
   },
-  referringMessage: {
+  referringChatMessage: {
     include: referringChatMessageQueryIncludeStatement,
   },
 } as const;

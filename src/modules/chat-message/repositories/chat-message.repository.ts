@@ -84,7 +84,7 @@ export class ChatMessageRepository {
     }
 
     if (chatMessage.referringChatMessage) {
-      chatMessageInput.referringMessage = {
+      chatMessageInput.referringChatMessage = {
         connect: {
           id: chatMessage.referringChatMessage.getId(),
         },
