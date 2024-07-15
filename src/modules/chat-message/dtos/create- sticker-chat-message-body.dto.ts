@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateStickerChatMessageBodyDto {
   @ApiProperty({ example: '2392dfgn-23nkldf2~' })
@@ -12,4 +12,9 @@ export class CreateStickerChatMessageBodyDto {
   })
   @IsString()
   stickerId: string;
+
+  @ApiPropertyOptional({ example: 'd28ngkldf-23nkldmklf~' })
+  @IsString()
+  @IsOptional()
+  referringChatMessageId: string;
 }

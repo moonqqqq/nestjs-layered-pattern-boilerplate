@@ -66,9 +66,11 @@ export class ChatMessageController {
   @HttpCode(HttpStatus.OK)
   async createStickerChatMessage(
     @ReqUser() currentUser: IUserPayload,
-    @Body() { chatroomId, stickerId }: CreateStickerChatMessageBodyDto,
+    @Body() stickerChatMessageInput: CreateStickerChatMessageBodyDto,
   ) {
-    const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
+    const chatroom = await this.chatroomservice.getChatroomById(
+      stickerChatMessageInput.chatroomId,
+    );
 
     if (!chatroom)
       throw new BadRequestException(BadInputErrorBody.WRONG_CHATROOM_ID);
@@ -76,12 +78,11 @@ export class ChatMessageController {
     const sender = chatroom
       .getMembers()
       .find((member) => member.getUserId() == currentUser.id);
-    const chatroomData = { chatroomId, stickerId };
 
     const stickerChatMessage =
       await this.chatMessageService.createStickerChatMessage(
         sender,
-        chatroomData,
+        stickerChatMessageInput,
       );
 
     return new ResWrapSingleDto(

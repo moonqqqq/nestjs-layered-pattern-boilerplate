@@ -58,8 +58,20 @@ export class ChatMessageService {
 
   async createStickerChatMessage(
     sender: User,
-    chatMessageData: { chatroomId: string; stickerId: string },
+    chatMessageData: {
+      chatroomId: string;
+      stickerId: string;
+      referringChatMessageId: string;
+    },
   ) {
+    let referringChatMessage: ReferringChatMessage;
+    if (chatMessageData.referringChatMessageId) {
+      referringChatMessage =
+        await this.chatMessageRepository.getReferringChatMessageById(
+          chatMessageData.referringChatMessageId,
+        );
+    }
+
     const sticker = await this.stickerRepository.findById(
       chatMessageData.stickerId,
     );
@@ -71,6 +83,7 @@ export class ChatMessageService {
       type: CHAT_MESSAGE_KIND.STICKER,
       sticker: sticker,
       user: sender,
+      referringChatMessage,
     });
 
     return await this.chatMessageRepository.save(stickerChatMessage);

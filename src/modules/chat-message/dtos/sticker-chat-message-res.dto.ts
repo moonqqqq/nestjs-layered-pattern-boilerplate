@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import {
   CHAT_MESSAGE_KIND,
@@ -8,6 +8,8 @@ import { User } from '../../user/domains/user.domain';
 import { StickerChatMessage } from '../domains/sticker-chat-message.domain';
 import { Sticker } from '../../sticker/domains/sticker.domain';
 import { StickerResDto } from '../../sticker/dtos/sticker-res.dto';
+import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
+import { ReferringChatMessageResDto } from './referring-chat-message-res.dto';
 
 export class StickerChatMessageResDto {
   @Exclude() private readonly _id: string;
@@ -15,6 +17,7 @@ export class StickerChatMessageResDto {
   @Exclude() private readonly _type: TCHAT_MESSAGE_KIND;
   @Exclude() private readonly _sticker: Sticker;
   @Exclude() private readonly _sender: User;
+  @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
 
   constructor(chatMessage: StickerChatMessage) {
     this._id = chatMessage.id;
@@ -22,6 +25,7 @@ export class StickerChatMessageResDto {
     this._sticker = chatMessage.sticker;
     this._sender = chatMessage.user;
     this._chatroomId = chatMessage.chatroomId;
+    this._referringChatMessage = chatMessage.referringChatMessage;
   }
 
   @ApiProperty({ example: '6a35589c-3e8c-4fd9-bda2-620d421dd5b9' })
@@ -52,5 +56,13 @@ export class StickerChatMessageResDto {
   @Expose()
   get senderId(): string {
     return this._sender.getUserId();
+  }
+
+  @ApiPropertyOptional()
+  @Expose()
+  get referringChatMessage(): ReferringChatMessageResDto {
+    if (this._referringChatMessage) {
+      return new ReferringChatMessageResDto(this._referringChatMessage);
+    }
   }
 }
