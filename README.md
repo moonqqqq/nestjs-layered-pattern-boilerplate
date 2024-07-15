@@ -60,7 +60,7 @@ Recommanded connection pool size is "default pool size (num_physical_cpus * 2 + 
 ## Chat messsage
 - [ ] Send chat message
     - [x] text chat-message
-        - [ ] tagged user on a message
+        - [x] tagged user on a message
         - [ ] referencing past message
         - [ ] send attachment together
     - [x] sticker chat-message

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { userQueryIncludeStatement } from '../../user/types/user-entity-include.type';
 
 export const textMessageQueryIncludeStatement = {
   chatroom: true,
@@ -6,22 +7,14 @@ export const textMessageQueryIncludeStatement = {
     include: {
       user: {
         include: {
-          userProfile: {
-            include: {
-              profileImage: true,
-            },
-          },
+          ...userQueryIncludeStatement,
         },
       },
     },
   },
   user: {
     include: {
-      userProfile: {
-        include: {
-          profileImage: true,
-        },
-      },
+      ...userQueryIncludeStatement,
     },
   },
 } as const;
