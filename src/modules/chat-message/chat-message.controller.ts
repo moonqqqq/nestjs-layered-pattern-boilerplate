@@ -21,7 +21,6 @@ import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
 import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
-import { UserService } from '../user/user.service';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -29,7 +28,6 @@ export class ChatMessageController {
   constructor(
     private readonly chatMessageService: ChatMessageService,
     private readonly chatroomservice: ChatroomService,
-    private readonly userService: UserService,
   ) {}
 
   @Post('text')
@@ -87,6 +85,9 @@ export class ChatMessageController {
         sender,
         stickerChatMessageInput,
       );
+
+    // Send push notification
+    // pushManager.taggedMessage(textChatMessage)
 
     return new ResWrapSingleDto(
       new StickerChatMessageResDto(stickerChatMessage),

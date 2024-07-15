@@ -1,3 +1,4 @@
+import { InputFile } from '../../upload/domains/file.domain';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ReferringChatMessage } from './referring-chat-message.domain';
@@ -8,6 +9,7 @@ export class ChatMessage {
   readonly type: TCHAT_MESSAGE_KIND;
   readonly user: User;
   referringChatMessage?: ReferringChatMessage;
+  attachment?: InputFile;
   //   readonly emojiReactions?: EmojiReaction[];
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
@@ -18,6 +20,7 @@ export class ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly user: User;
     referringChatMessage?: ReferringChatMessage;
+    attachment?: InputFile;
     //   readonly emojiReactions?: EmojiReaction[];
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
@@ -26,6 +29,7 @@ export class ChatMessage {
     (this.chatroomId = chatMessage.chatroomId), (this.type = chatMessage.type);
     this.user = chatMessage.user;
     this.referringChatMessage = chatMessage.referringChatMessage;
+    this.attachment = chatMessage.attachment;
     // this.emojiReactions = chatMessage.emojiReactions
     this.createdAt = chatMessage.createdAt;
     this.updatedAt = chatMessage.updatedAt;
@@ -41,5 +45,9 @@ export class ChatMessage {
 
   setReferringChatMessage(referringChatMessage: ReferringChatMessage) {
     this.referringChatMessage = referringChatMessage;
+  }
+
+  setAttachment(attachment: InputFile) {
+    this.attachment = attachment;
   }
 }

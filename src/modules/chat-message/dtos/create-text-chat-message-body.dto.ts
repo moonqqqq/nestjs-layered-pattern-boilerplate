@@ -20,4 +20,9 @@ export class TextCreateChatMessageBodyDto {
   @IsString()
   @IsOptional()
   referringChatMessageId: string;
+
+  @ApiPropertyOptional({ example: 'd28ngkldf-23nkldmklf~' })
+  @IsString()
+  @IsOptional()
+  attachmentId: string;
 }

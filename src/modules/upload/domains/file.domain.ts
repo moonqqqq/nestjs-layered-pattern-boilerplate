@@ -39,4 +39,8 @@ export class InputFile {
       createdAt: inputFileEntity.createdAt,
     });
   }
+
+  getId() {
+    return this.id;
+  }
 }

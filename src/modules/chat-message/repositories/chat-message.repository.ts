@@ -55,13 +55,18 @@ export class ChatMessageRepository {
       type: chatMessage.type,
       user: {
         connect: {
-          id: chatMessage.user.id,
+          id: chatMessage.user.getUserId(),
         },
       },
     };
 
     if (chatMessage instanceof TextChatMessage) {
       chatMessageInput.content = chatMessage.content;
+      chatMessageInput.attachment = {
+        connect: {
+          id: chatMessage.attachment.getId(),
+        },
+      };
     }
 
     if (chatMessage instanceof StickerChatMessage) {

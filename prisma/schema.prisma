@@ -115,7 +115,10 @@ model ChatMessageEntity {
   emojiReactions EmojiReactionEntity[]
   //  taggedUsers      TaggedUserEntity[]
   taggedUserIds   Json?
-
+  
+  attachmentId  String? @unique
+  attachment    InputFileEntity? @relation(fields: [attachmentId], references: [id])
+  
   // Self relation
   referringChatMessageId  String? @unique
   referringChatMessage    ChatMessageEntity? @relation("ReferringChatMessage", fields: [referringChatMessageId], references: [id])
@@ -168,6 +171,7 @@ model InputFileEntity {
   userProfile UserProfileEntity?
   chatroom    ChatroomEntity?
   sticker     StickerEntity?
+  chatMessage ChatMessageEntity?
 
   createdAt DateTime @default(now())
 

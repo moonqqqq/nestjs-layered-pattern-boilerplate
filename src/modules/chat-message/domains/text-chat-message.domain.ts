@@ -3,6 +3,7 @@ import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
 import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
 import { ReferringChatMessage } from './referring-chat-message.domain';
+import { InputFile } from '../../upload/domains/file.domain';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
@@ -36,11 +37,15 @@ export class TextChatMessage extends ChatMessage {
     });
 
     if (chatMessage.referringChatMessage) {
-      const referringChatMessage = chatMessage.referringChatMessage
-        ? ReferringChatMessage.fromEntity(chatMessage.referringChatMessage)
-        : null;
+      textChatMessage.setReferringChatMessage(
+        ReferringChatMessage.fromEntity(chatMessage.referringChatMessage),
+      );
+    }
 
-      textChatMessage.setReferringChatMessage(referringChatMessage);
+    if (chatMessage.attachment) {
+      textChatMessage.setAttachment(
+        InputFile.fromEntity(chatMessage.attachment),
+      );
     }
 
     return textChatMessage;

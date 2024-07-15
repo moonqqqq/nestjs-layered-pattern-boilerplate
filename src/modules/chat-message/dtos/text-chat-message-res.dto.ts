@@ -8,6 +8,8 @@ import { TextChatMessage } from '../domains/text-chat-message.domain';
 import { User } from '../../user/domains/user.domain';
 import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 import { ReferringChatMessageResDto } from './referring-chat-message-res.dto';
+import { InputFile } from '../../upload/domains/file.domain';
+import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
 
 export class TextChatMessageResDto {
   @Exclude() private readonly _id: string;
@@ -17,6 +19,7 @@ export class TextChatMessageResDto {
   @Exclude() private readonly _sender: User;
   @Exclude() private readonly _taggedUserIds?: string[];
   @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
+  @Exclude() private readonly _attachment?: InputFile;
 
   constructor(chatMessage: TextChatMessage) {
     this._id = chatMessage.id;
@@ -26,6 +29,7 @@ export class TextChatMessageResDto {
     this._chatroomId = chatMessage.chatroomId;
     this._taggedUserIds = chatMessage.taggedUserIds;
     this._referringChatMessage = chatMessage.referringChatMessage;
+    this._attachment = chatMessage.attachment;
   }
 
   @ApiProperty({ example: '6a35589c-3e8c-4fd9-bda2-620d421dd5b9' })
@@ -69,6 +73,14 @@ export class TextChatMessageResDto {
   get referringChatMessage(): ReferringChatMessageResDto {
     if (this._referringChatMessage) {
       return new ReferringChatMessageResDto(this._referringChatMessage);
+    }
+  }
+
+  @ApiPropertyOptional()
+  @Expose()
+  get attachment(): InputFileResDto {
+    if (this._attachment) {
+      return new InputFileResDto(this._attachment);
     }
   }
 }

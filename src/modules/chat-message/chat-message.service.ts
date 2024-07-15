@@ -9,6 +9,7 @@ import { StickerRepository } from '../sticker/sticker.repository';
 import { UserRepository } from '../user/user.repository';
 import { ChatMessageRepository } from './repositories/chat-message.repository';
 import { ReferringChatMessage } from './domains/referring-chat-message.domain';
+import { InputFileRepository } from '../upload/input-file-repository';
 
 @Injectable()
 export class ChatMessageService {
@@ -16,6 +17,7 @@ export class ChatMessageService {
     private readonly stickerRepository: StickerRepository,
     private readonly userRepository: UserRepository,
     private readonly chatMessageRepository: ChatMessageRepository,
+    private readonly inputFileRepository: InputFileRepository,
   ) {}
 
   async createTextChatMessage(
@@ -25,6 +27,7 @@ export class ChatMessageService {
       content: string;
       taggedUserIds?: string[];
       referringChatMessageId: string;
+      attachmentId?: string;
     },
   ) {
     const textChatMessage = new TextChatMessage({
@@ -40,6 +43,13 @@ export class ChatMessageService {
           chatMessageData.referringChatMessageId,
         );
       textChatMessage.setReferringChatMessage(referringChatMessage);
+    }
+
+    if (chatMessageData.attachmentId) {
+      const attachment = await this.inputFileRepository.findById(
+        chatMessageData.attachmentId,
+      );
+      textChatMessage.setAttachment(attachment);
     }
 
     return await this.chatMessageRepository.save(textChatMessage);

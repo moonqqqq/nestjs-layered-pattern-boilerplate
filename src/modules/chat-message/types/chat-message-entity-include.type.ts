@@ -9,7 +9,6 @@ export const chatMessageQueryIncludeStatement = {
       file: true,
     },
   },
-  taggedUserIds: true,
   user: {
     include: {
       ...userQueryIncludeStatement,
@@ -18,6 +17,7 @@ export const chatMessageQueryIncludeStatement = {
   referringChatMessage: {
     include: referringChatMessageQueryIncludeStatement,
   },
+  attachment: true,
 } as const;
 
 export type TChatMessageQueryIncludeStatement =
