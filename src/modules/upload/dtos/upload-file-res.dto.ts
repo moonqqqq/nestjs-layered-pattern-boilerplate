@@ -17,6 +17,12 @@ export class InputFileResDto {
     this._size = inputFile.size;
   }
 
+  @ApiProperty({ example: 'sf2340dfgkl-2fmdklfmdkl~' })
+  @Expose()
+  get id(): string {
+    return this._id;
+  }
+
   @ApiProperty({ example: 'kim' })
   @Expose()
   get name(): string {

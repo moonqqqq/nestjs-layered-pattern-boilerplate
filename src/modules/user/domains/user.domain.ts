@@ -1,4 +1,5 @@
 import { UserProfile } from '../../user-profile/domains/user-profile.domain';
+import { TUserQueryIncludeStatement } from '../types/user-entity-include.type';
 
 export class User {
   readonly id?: string | null;
@@ -25,24 +26,7 @@ export class User {
     this.updatedAt = user.updatedAt;
   }
 
-  static fromEntity(userEntity: {
-    id: string;
-    loginId: string;
-    password: string;
-    userProfile: {
-      id: string;
-      name: string;
-      phoneNumber: string;
-      profileImage?: {
-        id: string;
-        name: string;
-        originalName: string;
-        path: string;
-        size: string;
-        createdAt: Date;
-      };
-    };
-  }) {
+  static fromEntity(userEntity: TUserQueryIncludeStatement) {
     return new User({
       ...userEntity,
       userProfile: UserProfile.fromEntity(userEntity.userProfile),

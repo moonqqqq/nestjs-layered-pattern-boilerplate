@@ -2,25 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../share-modules/database/prisma/prisma.service';
 import { Chatroom } from './domains/chatroom.domain';
 import { Prisma } from '@prisma/client';
+import {
+  TChatroomQueryIncludeStatement,
+  chatroomQueryIncludeStatement,
+} from './types/chatroom-include.type';
 
 @Injectable()
 export class ChatroomRepository {
   constructor(private readonly prisma: PrismaService) {}
-
-  private chatroomQueryIncludeStatement = {
-    members: {
-      include: {
-        userProfile: true,
-      },
-    },
-  };
 
   async findById(chatroomId: string) {
     const chatroomEntity = await this.prisma.chatroomEntity.findFirst({
       where: {
         id: chatroomId,
       },
-      include: this.chatroomQueryIncludeStatement,
+      include: chatroomQueryIncludeStatement,
     });
 
     if (chatroomEntity) return Chatroom.fromEntity(chatroomEntity);
@@ -37,7 +33,7 @@ export class ChatroomRepository {
           },
         },
       },
-      include: this.chatroomQueryIncludeStatement,
+      include: chatroomQueryIncludeStatement,
     });
 
     return chatroomEntities.map((chatroomEntity) =>
@@ -60,7 +56,7 @@ export class ChatroomRepository {
           },
         ],
       },
-      include: this.chatroomQueryIncludeStatement,
+      include: chatroomQueryIncludeStatement,
     });
     if (chatrooms.length == 0) return null;
 
@@ -87,16 +83,8 @@ export class ChatroomRepository {
       members: memberConnect,
     };
 
-    let chatroomEntity: Prisma.ChatroomEntityGetPayload<{
-      include: {
-        members: {
-          include: {
-            userProfile: true;
-          };
-        };
-      };
-    }>;
-
+    // update or create
+    let chatroomEntity: TChatroomQueryIncludeStatement;
     if (chatroom.getChatroomId()) {
       // update
       chatroomEntity = await this.prisma.chatroomEntity.update({
@@ -104,13 +92,13 @@ export class ChatroomRepository {
           id: chatroom.getChatroomId(),
         },
         data: chatroomData,
-        include: this.chatroomQueryIncludeStatement,
+        include: chatroomQueryIncludeStatement,
       });
     } else {
       // create
       chatroomEntity = await this.prisma.chatroomEntity.create({
         data: chatroomData,
-        include: this.chatroomQueryIncludeStatement,
+        include: chatroomQueryIncludeStatement,
       });
     }
 

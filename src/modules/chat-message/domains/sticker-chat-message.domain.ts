@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
 import { ChatMessage } from './chat-message.domain';
 import { Sticker } from '../../sticker/domains/sticker.domain';
+import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
+import { ReferringChatMessage } from './referring-chat-message.domain';
 
 export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;
@@ -13,6 +14,7 @@ export class StickerChatMessage extends ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly sticker: Sticker;
     readonly user: User;
+    // readonly referringChatMessage?: ReferringChatMessage;
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
@@ -22,30 +24,23 @@ export class StickerChatMessage extends ChatMessage {
     this.sticker = sticker;
   }
 
-  static fromEntity(
-    chatMessage: Prisma.ChatMessageEntityGetPayload<{
-      include: {
-        chatroom: true;
-        user: {
-          include: {
-            userProfile: true;
-          };
-        };
-        sticker: {
-          include: {
-            file: true;
-          };
-        };
-      };
-    }>,
-  ) {
-    return new StickerChatMessage({
+  static fromEntity(chatMessage: TChatMessageQueryIncludeStatement) {
+    const stickerChatMessage = new StickerChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
       type: chatMessage.type,
-      sticker: new Sticker(chatMessage.sticker),
+      sticker: Sticker.fromEntity(chatMessage.sticker),
       user: User.fromEntity(chatMessage.user),
     });
+
+    if (chatMessage.referringChatMessage) {
+      const referringChatMessage = ReferringChatMessage.fromEntity(
+        chatMessage.referringChatMessage,
+      );
+      stickerChatMessage.setReferringChatMessage(referringChatMessage);
+    }
+
+    return stickerChatMessage;
   }
 
   getSticker() {
