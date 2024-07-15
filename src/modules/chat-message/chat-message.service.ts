@@ -7,17 +7,15 @@ import { StickerChatMessage } from './domains/sticker-chat-message.domain';
 import { WrongInputId } from '../../nestjs-utils/exceptions/service-layer.exception';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { StickerRepository } from '../sticker/sticker.repository';
-import { TextChatMessageRepository } from './repositories/text-chat-message.repository';
-import { StickerChatMessageRepository } from './repositories/sticker-chat-message.repository';
 import { UserRepository } from '../user/user.repository';
+import { ChatMessageRepository } from './repositories/chat-message.repository';
 
 @Injectable()
 export class ChatMessageService {
   constructor(
-    private readonly textChatMessageRepository: TextChatMessageRepository,
-    private readonly stickerChatMessageRepository: StickerChatMessageRepository,
     private readonly stickerRepository: StickerRepository,
     private readonly userRepository: UserRepository,
+    private readonly chatMessageRepository: ChatMessageRepository,
   ) {}
 
   async createTextChatMessage(
@@ -44,7 +42,7 @@ export class ChatMessageService {
       textChatMessage.addTaggedUsers(taggedUsers);
     }
 
-    return await this.textChatMessageRepository.save(textChatMessage);
+    return await this.chatMessageRepository.save(textChatMessage);
   }
 
   async createStickerChatMessage(
@@ -64,6 +62,6 @@ export class ChatMessageService {
       user: sender,
     });
 
-    return await this.stickerChatMessageRepository.save(stickerChatMessage);
+    return await this.chatMessageRepository.save(stickerChatMessage);
   }
 }

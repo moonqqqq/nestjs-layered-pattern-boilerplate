@@ -6,6 +6,7 @@ import { TTextMessageQueryIncludeStatement } from '../types/text-message-entity-
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
   readonly taggedUsers?: User[];
+  readonly type: TCHAT_MESSAGE_KIND;
   //   readonly referringMessage?: ChatMessage[];
 
   constructor(chatMessage: {
