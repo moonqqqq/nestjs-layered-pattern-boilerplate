@@ -62,18 +62,6 @@ export class ChatMessageRepository {
 
     if (chatMessage instanceof TextChatMessage) {
       chatMessageInput.content = chatMessage.content;
-
-      if (chatMessage?.taggedUsers?.length > 0) {
-        chatMessageInput.taggedUsers = {
-          createMany: {
-            data: chatMessage.taggedUsers.map((taggedUser) => {
-              return {
-                userId: taggedUser.getUserId(),
-              };
-            }),
-          },
-        };
-      }
     }
 
     if (chatMessage instanceof StickerChatMessage) {

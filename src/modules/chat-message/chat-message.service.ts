@@ -42,15 +42,6 @@ export class ChatMessageService {
       textChatMessage.setReferringChatMessage(referringChatMessage);
     }
 
-    if (chatMessageData?.taggedUserIds?.length > 0) {
-      const taggedUsers = await Promise.all(
-        chatMessageData.taggedUserIds.map((taggedUserId) =>
-          this.userRepository.findById(taggedUserId),
-        ),
-      );
-      textChatMessage.addTaggedUsers(taggedUsers);
-    }
-
     return await this.chatMessageRepository.save(textChatMessage);
   }
 

@@ -9,15 +9,7 @@ export const chatMessageQueryIncludeStatement = {
       file: true,
     },
   },
-  taggedUsers: {
-    include: {
-      user: {
-        include: {
-          ...userQueryIncludeStatement,
-        },
-      },
-    },
-  },
+  taggedUserIds: true,
   user: {
     include: {
       ...userQueryIncludeStatement,

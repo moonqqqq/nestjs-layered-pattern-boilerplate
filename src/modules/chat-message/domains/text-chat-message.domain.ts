@@ -6,7 +6,7 @@ import { ReferringChatMessage } from './referring-chat-message.domain';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
-  readonly taggedUsers?: User[];
+  readonly taggedUserIds?: string[];
   readonly type: TCHAT_MESSAGE_KIND;
 
   constructor(chatMessage: {
@@ -15,31 +15,24 @@ export class TextChatMessage extends ChatMessage {
     readonly type: TCHAT_MESSAGE_KIND;
     readonly content: string;
     readonly user: User;
-    readonly taggedUsers?: User[];
+    readonly taggedUserIds?: string[];
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
     const { content, ...baseChatMessage } = chatMessage;
     super(baseChatMessage);
     this.content = content;
-    this.taggedUsers = chatMessage.taggedUsers || [];
+    this.taggedUserIds = chatMessage.taggedUserIds || [];
   }
 
   static fromEntity(chatMessage: TChatMessageQueryIncludeStatement) {
-    const taggedUsers =
-      chatMessage?.taggedUsers.length > 0
-        ? chatMessage.taggedUsers.map((taggedUser) =>
-            User.fromEntity(taggedUser.user),
-          )
-        : null;
-
     const textChatMessage = new TextChatMessage({
       id: chatMessage.id,
       chatroomId: chatMessage.chatroom.id,
       type: chatMessage.type,
       content: chatMessage.content,
       user: User.fromEntity(chatMessage.user),
-      taggedUsers,
+      taggedUserIds: chatMessage.taggedUserIds as string[],
     });
 
     if (chatMessage.referringChatMessage) {
@@ -55,13 +48,5 @@ export class TextChatMessage extends ChatMessage {
 
   getContent() {
     return this.content;
-  }
-
-  addTaggedUsers(users: User[]) {
-    this.taggedUsers.push(...users);
-  }
-
-  getTaggedUsers() {
-    return this.taggedUsers;
   }
 }

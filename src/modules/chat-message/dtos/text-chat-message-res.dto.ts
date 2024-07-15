@@ -6,7 +6,6 @@ import {
 } from '../constants/chat-message.constant';
 import { TextChatMessage } from '../domains/text-chat-message.domain';
 import { User } from '../../user/domains/user.domain';
-import { TaggedUserResDto } from './tagged-user-res.dto';
 import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 import { ReferringChatMessageResDto } from './referring-chat-message-res.dto';
 
@@ -16,7 +15,7 @@ export class TextChatMessageResDto {
   @Exclude() private readonly _type: TCHAT_MESSAGE_KIND;
   @Exclude() private readonly _content: string;
   @Exclude() private readonly _sender: User;
-  @Exclude() private readonly _taggedUsers?: User[];
+  @Exclude() private readonly _taggedUserIds?: string[];
   @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
 
   constructor(chatMessage: TextChatMessage) {
@@ -25,7 +24,7 @@ export class TextChatMessageResDto {
     this._content = chatMessage.content;
     this._sender = chatMessage.user;
     this._chatroomId = chatMessage.chatroomId;
-    this._taggedUsers = chatMessage.taggedUsers;
+    this._taggedUserIds = chatMessage.taggedUserIds;
     this._referringChatMessage = chatMessage.referringChatMessage;
   }
 
@@ -61,10 +60,8 @@ export class TextChatMessageResDto {
 
   @ApiPropertyOptional()
   @Expose()
-  get taggedUsers(): TaggedUserResDto[] {
-    if (this._taggedUsers?.length > 0) {
-      return this._taggedUsers.map((member) => new TaggedUserResDto(member));
-    }
+  get taggedUserIds(): string[] {
+    return this._taggedUserIds;
   }
 
   @ApiPropertyOptional()
