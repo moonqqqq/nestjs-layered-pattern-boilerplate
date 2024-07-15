@@ -40,3 +40,15 @@ export const seedUsers = [
     },
   },
 ];
+
+export const seedStickers = [
+  {
+    name: 'bull',
+    file: {
+      name: 'bull',
+      originalName: 'bull.png',
+      path: 'https://t3.ftcdn.net/jpg/01/66/30/78/360_F_166307829_vbVzteJ43fcLhZOW7LZIcStMNs7A4l0q.jpg',
+      size: '1000',
+    },
+  },
+];

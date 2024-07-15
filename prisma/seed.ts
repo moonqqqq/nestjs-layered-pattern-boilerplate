@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { seedUsers } from './seed-datas/seed-users';
+import { seedUsers, seedStickers } from './seed-datas/seed-users';
 
 const prisma = new PrismaClient();
 async function main() {
@@ -14,8 +14,26 @@ async function main() {
       }),
     ),
   );
+
+  await Promise.all(
+    seedStickers.map(async (sticker) => {
+      await prisma.stickerEntity.create({
+        data: {
+          name: sticker.name,
+          file: {
+            create: {
+              name: sticker.file.name,
+              originalName: sticker.file.originalName,
+              path: sticker.file.path,
+              size: sticker.file.size,
+            },
+          },
+        },
+      });
+    }),
+  );
   // eslint-disable-next-line no-console
-  console.log('Seeding Done - added: [users]');
+  console.log('Seeding Done - added: [users, sticker]');
 }
 
 main()
