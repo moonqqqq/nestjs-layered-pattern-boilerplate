@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { Sticker } from '../domains/sticker.domain';
-import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
+import { InputFileResDto } from '../../upload/dtos/input-file-res.dto';
 import { InputFile } from '../../upload/domains/file.domain';
 
 export class StickerResDto {

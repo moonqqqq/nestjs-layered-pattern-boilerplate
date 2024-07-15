@@ -9,7 +9,7 @@ import { IUploadService } from './interfaces/upload-service.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { InputFileResDto } from './dtos/upload-file-res.dto';
+import { InputFileResDto } from './dtos/input-file-res.dto';
 
 import { FileUploadDTO } from './dtos/upload-file-req.dto';
 import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';

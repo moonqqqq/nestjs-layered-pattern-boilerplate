@@ -9,7 +9,7 @@ import { User } from '../../user/domains/user.domain';
 import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 import { ReferringChatMessageResDto } from './referring-chat-message-res.dto';
 import { InputFile } from '../../upload/domains/file.domain';
-import { InputFileResDto } from '../../upload/dtos/upload-file-res.dto';
+import { InputFileResDto } from '../../upload/dtos/input-file-res.dto';
 
 export class TextChatMessageResDto {
   @Exclude() private readonly _id: string;
