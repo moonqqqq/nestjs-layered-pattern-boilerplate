@@ -34,6 +34,7 @@ export class TextChatMessage extends ChatMessage {
       content: chatMessage.content,
       user: User.fromEntity(chatMessage.user),
       taggedUserIds: chatMessage.taggedUserIds as string[],
+      createdAt: chatMessage.createdAt,
     });
 
     if (chatMessage.referringChatMessage) {

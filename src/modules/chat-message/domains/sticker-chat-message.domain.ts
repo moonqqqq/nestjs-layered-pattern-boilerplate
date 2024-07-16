@@ -31,6 +31,7 @@ export class StickerChatMessage extends ChatMessage {
       type: chatMessage.type,
       sticker: Sticker.fromEntity(chatMessage.sticker),
       user: User.fromEntity(chatMessage.user),
+      createdAt: chatMessage.createdAt,
     });
 
     if (chatMessage.referringChatMessage) {

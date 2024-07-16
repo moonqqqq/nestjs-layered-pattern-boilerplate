@@ -18,11 +18,16 @@ export class ChatMessageService {
     private readonly inputFileRepository: InputFileRepository,
   ) {}
 
-  async getChatMessages(currentUserId: string, chatroomId: string) {
+  async getChatMessages(
+    currentUserId: string,
+    chatroomId: string,
+    lastItemCreatedAt: Date,
+  ) {
     // get chatMessages
     return await this.chatMessageRepository.findManyByChatroomId(
       currentUserId,
       chatroomId,
+      lastItemCreatedAt,
     );
   }
 

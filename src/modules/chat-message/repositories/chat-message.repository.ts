@@ -10,13 +10,18 @@ import {
 } from '../types/chat-message-entity-include.type';
 import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 import { referringChatMessageQueryIncludeStatement } from '../types/referring-chat-message-entity-include.type';
+import { INFINITE_SCROLL } from '../../../custom-utils/pagination/constants/infinite-scroll.constant';
 
 @Injectable()
 export class ChatMessageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findManyByChatroomId(currentUserId: string, chatroomId: string) {
-    const chatMessages = await this.prisma.chatMessageEntity.findMany({
+  async findManyByChatroomId(
+    currentUserId: string,
+    chatroomId: string,
+    lastItemCreatedAt: Date,
+  ) {
+    const chatMessageEntities = await this.prisma.chatMessageEntity.findMany({
       where: {
         chatroomId,
         chatroom: {
@@ -26,15 +31,33 @@ export class ChatMessageRepository {
             },
           },
         },
+        createdAt: {
+          lt: lastItemCreatedAt,
+        },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: INFINITE_SCROLL.DEFAULT_COUNT_PER_PAGE + 1,
       include: chatMessageQueryIncludeStatement,
     });
 
-    return chatMessages.map((chatMessage) => {
-      return chatMessage.type === CHAT_MESSAGE_KIND.TEXT
-        ? TextChatMessage.fromEntity(chatMessage)
-        : StickerChatMessage.fromEntity(chatMessage);
+    const hasNext =
+      chatMessageEntities.length > INFINITE_SCROLL.DEFAULT_COUNT_PER_PAGE;
+    const results = hasNext
+      ? chatMessageEntities.slice(0, -1)
+      : chatMessageEntities;
+
+    const chatMessages = results.reverse().map((chatMessageEntity) => {
+      return chatMessageEntity.type === CHAT_MESSAGE_KIND.TEXT
+        ? TextChatMessage.fromEntity(chatMessageEntity)
+        : StickerChatMessage.fromEntity(chatMessageEntity);
     });
+
+    return {
+      hasNext,
+      chatMessages,
+    };
   }
 
   async findById(

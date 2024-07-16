@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ChatMessageService } from './chat-message.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, IntersectionType } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../nestjs-utils/guards/jwt-auth.guard';
 import { ApiOKListResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-res.decorator';
 import { ReqUser } from '../../nestjs-utils/decorators/user.decorator';
@@ -20,10 +20,16 @@ import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';
 import { ChatroomService } from '../chatroom/chatroom.service';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
-import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
+import {
+  ResWrapListAndMetadataDto,
+  ResWrapSingleDto,
+} from '../../common/dtos/res-wrappers.dto';
 import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
 import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
 import { GetChatMessagesQueryDto } from './dtos/get-chat-messages-query.dto';
+import { TextChatMessage } from './domains/text-chat-message.domain';
+import { ApiOKListAndMetadataResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-and-meta-res.decorator';
+import { InfiniteScrollMetadataResDTO } from '../../custom-utils/pagination/dtos/infinite-scroll-res.dto';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -36,11 +42,14 @@ export class ChatMessageController {
   @Get('')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  // @ApiOKListResponse(StickerChatMessageResDto)
+  @ApiOKListAndMetadataResponse(
+    InfiniteScrollMetadataResDTO,
+    IntersectionType(TextChatMessageResDto, StickerChatMessageResDto),
+  )
   @HttpCode(HttpStatus.OK)
   async getChatMessage(
     @ReqUser() currentUser: IUserPayload,
-    @Query() { chatroomId }: GetChatMessagesQueryDto,
+    @Query() { chatroomId, lastItemCreatedAt }: GetChatMessagesQueryDto,
   ) {
     const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
     if (!chatroom)
@@ -49,12 +58,20 @@ export class ChatMessageController {
     const chatMessages = await this.chatMessageService.getChatMessages(
       currentUser.id,
       chatroomId,
+      lastItemCreatedAt ? new Date(lastItemCreatedAt) : undefined,
     );
 
-    return chatMessages;
-    // return new ResWrapSingleDto(
-    //   new StickerChatMessageResDto(stickerChatMessage),
-    // );
+    // return chatMessages;
+    return new ResWrapListAndMetadataDto(
+      {
+        hasNext: chatMessages.hasNext,
+      },
+      chatMessages.chatMessages.map((message) => {
+        return message instanceof TextChatMessage
+          ? new TextChatMessageResDto(message)
+          : new StickerChatMessageResDto(message);
+      }),
+    );
   }
 
   @Post('text')

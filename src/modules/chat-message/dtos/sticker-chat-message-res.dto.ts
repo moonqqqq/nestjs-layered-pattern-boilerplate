@@ -18,6 +18,7 @@ export class StickerChatMessageResDto {
   @Exclude() private readonly _sticker: Sticker;
   @Exclude() private readonly _sender: User;
   @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
+  @Exclude() private readonly _createdAt?: Date;
 
   constructor(chatMessage: StickerChatMessage) {
     this._id = chatMessage.id;
@@ -26,6 +27,7 @@ export class StickerChatMessageResDto {
     this._sender = chatMessage.user;
     this._chatroomId = chatMessage.chatroomId;
     this._referringChatMessage = chatMessage.referringChatMessage;
+    this._createdAt = chatMessage.createdAt;
   }
 
   @ApiProperty({ example: '6a35589c-3e8c-4fd9-bda2-620d421dd5b9' })
@@ -46,7 +48,7 @@ export class StickerChatMessageResDto {
     return this._type;
   }
 
-  @ApiProperty({ example: 'sticker message' })
+  @ApiProperty()
   @Expose()
   get sticker(): StickerResDto {
     return new StickerResDto(this._sticker);
@@ -64,5 +66,11 @@ export class StickerChatMessageResDto {
     if (this._referringChatMessage) {
       return new ReferringChatMessageResDto(this._referringChatMessage);
     }
+  }
+
+  @ApiProperty()
+  @Expose()
+  get createdAt(): Date {
+    return this._createdAt;
   }
 }

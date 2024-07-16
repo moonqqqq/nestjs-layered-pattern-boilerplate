@@ -4,29 +4,24 @@ import { DataResDTO } from '../../../../common/dtos/data-res.dto';
 import { MetadataResDTO } from '../../../../common/dtos/metadata-res.dto';
 
 export const ApiOKListAndMetadataResponse = <
-  DataDTO extends Type<unknown>,
   MetadataDto extends Type<unknown>,
+  DataDTO extends Type<unknown>,
 >(
-  dataDTO: DataDTO,
   metadataDTO: MetadataDto,
+  dataDTO: DataDTO,
 ) =>
   applyDecorators(
-    ApiExtraModels(DataResDTO, dataDTO),
-    ApiExtraModels(MetadataResDTO, metadataDTO),
+    ApiExtraModels(DataResDTO, dataDTO, MetadataResDTO, metadataDTO),
     ApiOkResponse({
       schema: {
-        allOf: [
-          { $ref: getSchemaPath(DataResDTO) },
-          {
-            properties: {
-              metadata: { $ref: getSchemaPath(metadataDTO) },
-              data: {
-                type: 'array',
-                items: { $ref: getSchemaPath(dataDTO) },
-              },
-            },
+        type: 'object',
+        properties: {
+          metadata: { $ref: getSchemaPath(metadataDTO) },
+          data: {
+            type: 'array',
+            items: { $ref: getSchemaPath(dataDTO) },
           },
-        ],
+        },
       },
     }),
   );

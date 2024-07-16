@@ -3,13 +3,13 @@ import {
   IPaginationQuery,
   TListAndPagination,
 } from './interfaces/pagination.interface';
-import { DEFAULT_COUNT_PER_PAGE } from './constants/pagination.constant';
+import { PAGINATION } from './constants/pagination.constant';
 
 export default class Pagination {
   static #calculatePagination(
     currentPage: number = 1,
     totalCount: number,
-    pagePerCount: number = DEFAULT_COUNT_PER_PAGE,
+    pagePerCount: number = PAGINATION.DEFAULT_COUNT_PER_PAGE,
   ): IPagination {
     const totalPage = Math.ceil(totalCount / pagePerCount);
     return {
@@ -22,7 +22,7 @@ export default class Pagination {
 
   static getSkip(paginationQuery: IPaginationQuery) {
     const page = paginationQuery.page ?? 1;
-    const count = paginationQuery.count ?? DEFAULT_COUNT_PER_PAGE;
+    const count = paginationQuery.count ?? PAGINATION.DEFAULT_COUNT_PER_PAGE;
     return (page - 1) * count;
   }
 

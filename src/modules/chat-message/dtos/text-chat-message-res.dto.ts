@@ -20,6 +20,7 @@ export class TextChatMessageResDto {
   @Exclude() private readonly _taggedUserIds?: string[];
   @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
   @Exclude() private readonly _attachment?: InputFile;
+  @Exclude() private readonly _createdAt?: Date;
 
   constructor(chatMessage: TextChatMessage) {
     this._id = chatMessage.id;
@@ -30,6 +31,7 @@ export class TextChatMessageResDto {
     this._taggedUserIds = chatMessage.taggedUserIds;
     this._referringChatMessage = chatMessage.referringChatMessage;
     this._attachment = chatMessage.attachment;
+    this._createdAt = chatMessage.createdAt;
   }
 
   @ApiProperty({ example: '6a35589c-3e8c-4fd9-bda2-620d421dd5b9' })
@@ -82,5 +84,11 @@ export class TextChatMessageResDto {
     if (this._attachment) {
       return new InputFileResDto(this._attachment);
     }
+  }
+
+  @ApiProperty()
+  @Expose()
+  get createdAt(): Date {
+    return this._createdAt;
   }
 }

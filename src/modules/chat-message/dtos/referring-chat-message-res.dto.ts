@@ -47,7 +47,7 @@ export class ReferringChatMessageResDto {
     return this._content;
   }
 
-  @ApiProperty({ example: 'sticker message' })
+  @ApiProperty()
   @Expose()
   get sticker(): StickerResDto {
     if (this._sticker) return new StickerResDto(this._sticker);
