@@ -6,7 +6,6 @@ import { StickerChatMessage } from './domains/sticker-chat-message.domain';
 import { WrongInputId } from '../../nestjs-utils/exceptions/service-layer.exception';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { StickerRepository } from '../sticker/sticker.repository';
-import { UserRepository } from '../user/user.repository';
 import { ChatMessageRepository } from './repositories/chat-message.repository';
 import { ReferringChatMessage } from './domains/referring-chat-message.domain';
 import { InputFileRepository } from '../upload/input-file-repository';
@@ -15,10 +14,17 @@ import { InputFileRepository } from '../upload/input-file-repository';
 export class ChatMessageService {
   constructor(
     private readonly stickerRepository: StickerRepository,
-    private readonly userRepository: UserRepository,
     private readonly chatMessageRepository: ChatMessageRepository,
     private readonly inputFileRepository: InputFileRepository,
   ) {}
+
+  async getChatMessages(currentUserId: string, chatroomId: string) {
+    // get chatMessages
+    return await this.chatMessageRepository.findManyByChatroomId(
+      currentUserId,
+      chatroomId,
+    );
+  }
 
   async createTextChatMessage(
     sender: User,

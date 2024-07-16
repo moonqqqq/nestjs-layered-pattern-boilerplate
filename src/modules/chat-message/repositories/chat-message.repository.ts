@@ -15,6 +15,28 @@ import { referringChatMessageQueryIncludeStatement } from '../types/referring-ch
 export class ChatMessageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findManyByChatroomId(currentUserId: string, chatroomId: string) {
+    const chatMessages = await this.prisma.chatMessageEntity.findMany({
+      where: {
+        chatroomId,
+        chatroom: {
+          members: {
+            some: {
+              id: currentUserId,
+            },
+          },
+        },
+      },
+      include: chatMessageQueryIncludeStatement,
+    });
+
+    return chatMessages.map((chatMessage) => {
+      return chatMessage.type === CHAT_MESSAGE_KIND.TEXT
+        ? TextChatMessage.fromEntity(chatMessage)
+        : StickerChatMessage.fromEntity(chatMessage);
+    });
+  }
+
   async findById(
     chatMessageId: string,
   ): Promise<TextChatMessage | StickerChatMessage> {

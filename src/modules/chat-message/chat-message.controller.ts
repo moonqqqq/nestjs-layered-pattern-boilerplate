@@ -2,9 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ChatMessageService } from './chat-message.service';
@@ -21,6 +23,7 @@ import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
 import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
 import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
+import { GetChatMessagesQueryDto } from './dtos/get-chat-messages-query.dto';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -29,6 +32,30 @@ export class ChatMessageController {
     private readonly chatMessageService: ChatMessageService,
     private readonly chatroomservice: ChatroomService,
   ) {}
+
+  @Get('')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  // @ApiOKListResponse(StickerChatMessageResDto)
+  @HttpCode(HttpStatus.OK)
+  async getChatMessage(
+    @ReqUser() currentUser: IUserPayload,
+    @Query() { chatroomId }: GetChatMessagesQueryDto,
+  ) {
+    const chatroom = await this.chatroomservice.getChatroomById(chatroomId);
+    if (!chatroom)
+      throw new BadRequestException(BadInputErrorBody.WRONG_CHATROOM_ID);
+
+    const chatMessages = await this.chatMessageService.getChatMessages(
+      currentUser.id,
+      chatroomId,
+    );
+
+    return chatMessages;
+    // return new ResWrapSingleDto(
+    //   new StickerChatMessageResDto(stickerChatMessage),
+    // );
+  }
 
   @Post('text')
   @ApiBearerAuth()
