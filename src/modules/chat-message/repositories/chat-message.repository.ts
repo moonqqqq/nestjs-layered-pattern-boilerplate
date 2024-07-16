@@ -63,29 +63,29 @@ export class ChatMessageRepository {
   async findById(
     chatMessageId: string,
   ): Promise<TextChatMessage | StickerChatMessage> {
-    const chatMessage = await this.prisma.chatMessageEntity.findFirst({
+    const chatMessageEntity = await this.prisma.chatMessageEntity.findFirst({
       where: {
         id: chatMessageId,
       },
       include: chatMessageQueryIncludeStatement,
     });
 
-    return chatMessage.type === CHAT_MESSAGE_KIND.TEXT
-      ? TextChatMessage.fromEntity(chatMessage)
-      : StickerChatMessage.fromEntity(chatMessage);
+    return chatMessageEntity.type === CHAT_MESSAGE_KIND.TEXT
+      ? TextChatMessage.fromEntity(chatMessageEntity)
+      : StickerChatMessage.fromEntity(chatMessageEntity);
   }
 
   async getReferringChatMessageById(
     chatMessageId: string,
   ): Promise<ReferringChatMessage> {
-    const chatMessage = await this.prisma.chatMessageEntity.findFirst({
+    const chatMessageEntity = await this.prisma.chatMessageEntity.findFirst({
       where: {
         id: chatMessageId,
       },
       include: referringChatMessageQueryIncludeStatement,
     });
 
-    return ReferringChatMessage.fromEntity(chatMessage);
+    return ReferringChatMessage.fromEntity(chatMessageEntity);
   }
 
   async save<T extends TextChatMessage | StickerChatMessage>(

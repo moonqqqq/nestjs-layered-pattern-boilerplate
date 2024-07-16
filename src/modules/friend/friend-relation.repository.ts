@@ -20,21 +20,22 @@ export class FriendRelationRepository {
   };
 
   async getFriends(userId: string) {
-    const friendRelations = await this.prisma.friendRelationEntity.findMany({
-      where: {
-        userId,
-      },
-      include: this.friendRelationQueryIncludeStatement,
-      orderBy: {
-        friend: {
-          userProfile: {
-            name: 'asc',
+    const friendRelationEntities =
+      await this.prisma.friendRelationEntity.findMany({
+        where: {
+          userId,
+        },
+        include: this.friendRelationQueryIncludeStatement,
+        orderBy: {
+          friend: {
+            userProfile: {
+              name: 'asc',
+            },
           },
         },
-      },
-    });
+      });
 
-    const friends = friendRelations.map((friendRelation) =>
+    const friends = friendRelationEntities.map((friendRelation) =>
       User.fromEntity(friendRelation.friend),
     );
 
@@ -42,36 +43,38 @@ export class FriendRelationRepository {
   }
 
   async getFriendDetailByUserId(currentUserId: string, friendId: string) {
-    const friendRelation = await this.prisma.friendRelationEntity.findFirst({
-      where: {
-        userId: currentUserId,
-        friendId,
-      },
-      include: this.friendRelationQueryIncludeStatement,
-    });
+    const friendRelationEntity =
+      await this.prisma.friendRelationEntity.findFirst({
+        where: {
+          userId: currentUserId,
+          friendId,
+        },
+        include: this.friendRelationQueryIncludeStatement,
+      });
 
-    if (!friendRelation) return null;
+    if (!friendRelationEntity) return null;
 
-    return User.fromEntity(friendRelation.friend);
+    return User.fromEntity(friendRelationEntity.friend);
   }
 
   async save(friendRelation: FriendRelation): Promise<User> {
-    const newFriendRelation = await this.prisma.friendRelationEntity.create({
-      data: {
-        user: {
-          connect: {
-            id: friendRelation.myId,
+    const newFriendRelationEntity =
+      await this.prisma.friendRelationEntity.create({
+        data: {
+          user: {
+            connect: {
+              id: friendRelation.myId,
+            },
+          },
+          friend: {
+            connect: {
+              id: friendRelation.friend.id,
+            },
           },
         },
-        friend: {
-          connect: {
-            id: friendRelation.friend.id,
-          },
-        },
-      },
-      include: this.friendRelationQueryIncludeStatement,
-    });
+        include: this.friendRelationQueryIncludeStatement,
+      });
 
-    return User.fromEntity(newFriendRelation.friend);
+    return User.fromEntity(newFriendRelationEntity.friend);
   }
 }

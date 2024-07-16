@@ -42,7 +42,7 @@ export class ChatroomRepository {
   }
 
   async findByUserIds(userIds: string[]) {
-    const chatrooms = await this.prisma.chatroomEntity.findMany({
+    const chatroomEntities = await this.prisma.chatroomEntity.findMany({
       where: {
         AND: [
           {
@@ -58,15 +58,15 @@ export class ChatroomRepository {
       },
       include: chatroomQueryIncludeStatement,
     });
-    if (chatrooms.length == 0) return null;
+    if (chatroomEntities.length == 0) return null;
 
-    const matchingChatroom = chatrooms.filter(
+    const matchingChatroomEntity = chatroomEntities.filter(
       (chatroom) => chatroom.members.length == userIds.length,
     );
 
-    if (matchingChatroom.length == 0) return null;
+    if (matchingChatroomEntity.length == 0) return null;
 
-    return Chatroom.fromEntity(matchingChatroom[0]);
+    return Chatroom.fromEntity(matchingChatroomEntity[0]);
   }
 
   async save(chatroom: Chatroom) {
