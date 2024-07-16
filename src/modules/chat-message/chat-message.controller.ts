@@ -20,16 +20,13 @@ import { API_ENDPOINT, API_VERSION } from '../../common/constants/api-versions';
 import { ChatroomService } from '../chatroom/chatroom.service';
 import { BadInputErrorBody } from '../../common/error-bodies/bad-input-error-body';
 import { TextChatMessageResDto } from './dtos/text-chat-message-res.dto';
-import {
-  ResWrapListAndMetadataDto,
-  ResWrapSingleDto,
-} from '../../common/dtos/res-wrappers.dto';
+import { ResWrapSingleDto } from '../../common/dtos/res-wrappers.dto';
 import { CreateStickerChatMessageBodyDto } from './dtos/create- sticker-chat-message-body.dto';
 import { StickerChatMessageResDto } from './dtos/sticker-chat-message-res.dto';
 import { GetChatMessagesQueryDto } from './dtos/get-chat-messages-query.dto';
 import { TextChatMessage } from './domains/text-chat-message.domain';
-import { ApiOKListAndMetadataResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-list-and-meta-res.decorator';
-import { InfiniteScrollMetadataResDTO } from '../../custom-utils/pagination/dtos/infinite-scroll-res.dto';
+import { ApiOkInfiniteScrollResponse } from '../../nestjs-utils/decorators/custom-api-res/ok/api-ok-infinite-scroll-res.decorator';
+import { InfiniteScrollAndDataResDto } from '../../custom-utils/pagination/dtos/infinite-scroll-and-data-res.dto';
 
 @ApiTags(`${API_ENDPOINT.CHAT_MESSAGE}`)
 @Controller(`${API_VERSION.ONE}/${API_ENDPOINT.CHAT_MESSAGE}`)
@@ -42,8 +39,7 @@ export class ChatMessageController {
   @Get('')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOKListAndMetadataResponse(
-    InfiniteScrollMetadataResDTO,
+  @ApiOkInfiniteScrollResponse(
     IntersectionType(TextChatMessageResDto, StickerChatMessageResDto),
   )
   @HttpCode(HttpStatus.OK)
@@ -62,7 +58,7 @@ export class ChatMessageController {
     );
 
     // return chatMessages;
-    return new ResWrapListAndMetadataDto(
+    return new InfiniteScrollAndDataResDto(
       {
         hasNext: chatMessages.hasNext,
       },
