@@ -145,7 +145,7 @@ model ChatMessageEntity {
 model EmojiReactionEntity {
   id        String          @id @default(uuid())
   userId    String
-  emogiReactionType  EmojiReacitonType
+  type  EmojiReacitonType
 
   messageId String
   message  ChatMessageEntity   @relation(fields: [messageId], references: [id])

@@ -21,6 +21,7 @@ import { FriendsModule } from './modules/friend/friend-relation.module';
 import { ChatroomModule } from './modules/chatroom/chatroom.module';
 import { ChatMessageModule } from './modules/chat-message/chat-message.module';
 import { StickerModule } from './modules/sticker/sticker.module';
+import { EmojiReactionModule } from './modules/emoji-reaction/emoji-reaction.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { StickerModule } from './modules/sticker/sticker.module';
     ChatroomModule,
     ChatMessageModule,
     StickerModule,
+    EmojiReactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
