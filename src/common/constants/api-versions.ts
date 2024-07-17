@@ -12,4 +12,5 @@ export const API_ENDPOINT = {
   FRIEND: 'friend',
   CHATROOM: 'chatroom',
   CHAT_MESSAGE: 'chat-message',
+  EMOJI_REACTION: 'emoji-reaction',
 } as const;

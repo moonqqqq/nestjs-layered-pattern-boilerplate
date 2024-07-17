@@ -85,6 +85,8 @@ export class ChatMessageController {
     if (!chatroom)
       throw new BadRequestException(BadInputErrorBody.WRONG_CHATROOM_ID);
 
+    // TODO: member auth check
+
     const sender = chatroom
       .getMembers()
       .find((member) => member.getUserId() == currentUser.id);

@@ -28,6 +28,7 @@ export class ThisIsForClient extends AuthorizationException {}
 export class UnderReviewStatus extends AuthorizationException {}
 export class NotMyEmployee extends AuthorizationException {}
 export class NotMyProject extends AuthorizationException {}
+export class NotMemberOnChatroom extends AuthorizationException {}
 
 /**
  * Bad Input

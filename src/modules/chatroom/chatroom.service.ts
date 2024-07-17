@@ -1,16 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { ChatroomRepository } from './chatroom.repository';
-import { UserRepository } from '../user/user.repository';
 import { Chatroom } from './domains/chatroom.domain';
 import { CHATROOM_KIND } from './constants/chatroom.constant';
 import { User } from '../user/domains/user.domain';
+import { NotMemberOnChatroom } from '../../nestjs-utils/exceptions/service-layer.exception';
+import { AuthErrorBody } from '../../common/error-bodies/auth-error-body';
 
 @Injectable()
 export class ChatroomService {
-  constructor(
-    private readonly chatroomRepository: ChatroomRepository,
-    private readonly userRepository: UserRepository,
-  ) {}
+  constructor(private readonly chatroomRepository: ChatroomRepository) {}
+
+  async checkAuthOnChatroomByChatMessageId(
+    chatMessageId: string,
+    userId: string,
+  ) {
+    const chatroom =
+      await this.chatroomRepository.findByChatMessageId(chatMessageId);
+
+    if (chatroom.isMember(userId))
+      throw new NotMemberOnChatroom(AuthErrorBody.NOT_MEMBER_OF_CHATROOM);
+  }
 
   async getChatroomById(chatroomId: string) {
     return await this.chatroomRepository.findById(chatroomId);

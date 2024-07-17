@@ -11,6 +11,7 @@ export const AUTH_ERROR_CODE = {
   JWT_MALFORMED: 'JWT_MALFORMED',
   INVALID_TOKEN_TYPE: 'INVALID_TOKEN_TYPE',
   NOT_ALLOWED_RULE: 'NOT_ALLOWED_RULE',
+  NOT_MEMBER_OF_CHATROOM: 'NOT_MEMBER_OF_CHATROOM',
 } as const;
 
 export const AuthErrorBody: Record<
@@ -56,5 +57,9 @@ export const AuthErrorBody: Record<
   NOT_ALLOWED_RULE: {
     errorCode: AUTH_ERROR_CODE.NOT_ALLOWED_RULE,
     message: 'You dont have permission',
+  },
+  NOT_MEMBER_OF_CHATROOM: {
+    errorCode: AUTH_ERROR_CODE.NOT_MEMBER_OF_CHATROOM,
+    message: 'You are not a member of this chatroom',
   },
 } as const;

@@ -5,14 +5,14 @@ export class EmojiReaction {
   readonly id?: string;
   readonly userId?: string;
   readonly type: TEMOJI_REACTION;
-  readonly messageId: string;
+  readonly chatMessageId: string;
   readonly createdAt?: Date;
 
   constructor(emojiReaction: {
     readonly id?: string;
     readonly userId: string;
     readonly type: TEMOJI_REACTION;
-    readonly messageId: string;
+    readonly chatMessageId: string;
     readonly createdAt?: Date;
   }) {
     this.id = emojiReaction.id;

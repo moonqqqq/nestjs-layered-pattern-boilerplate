@@ -52,6 +52,10 @@ export class Chatroom {
     this.members.push(...users);
   }
 
+  isMember(userId: string) {
+    return this.members.some((member) => member.id === userId);
+  }
+
   getMembers() {
     return this.members;
   }

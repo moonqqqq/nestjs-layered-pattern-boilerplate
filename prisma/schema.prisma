@@ -147,8 +147,8 @@ model EmojiReactionEntity {
   userId    String
   type  EmojiReacitonType
 
-  messageId String
-  message  ChatMessageEntity   @relation(fields: [messageId], references: [id])
+  chatMessageId String
+  chatMessage  ChatMessageEntity   @relation(fields: [chatMessageId], references: [id])
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
