@@ -48,7 +48,7 @@ export class ChatMessageRepository {
       ? chatMessageEntities.slice(0, -1)
       : chatMessageEntities;
 
-    const chatMessages = results.reverse().map((chatMessageEntity) => {
+    const chatMessages = results.map((chatMessageEntity) => {
       return chatMessageEntity.type === CHAT_MESSAGE_KIND.TEXT
         ? TextChatMessage.fromEntity(chatMessageEntity)
         : StickerChatMessage.fromEntity(chatMessageEntity);
