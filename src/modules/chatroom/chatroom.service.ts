@@ -17,7 +17,7 @@ export class ChatroomService {
     const chatroom =
       await this.chatroomRepository.findByChatMessageId(chatMessageId);
 
-    if (chatroom.isMember(userId))
+    if (!chatroom.isMember(userId))
       throw new NotMemberOnChatroom(AuthErrorBody.NOT_MEMBER_OF_CHATROOM);
   }
 

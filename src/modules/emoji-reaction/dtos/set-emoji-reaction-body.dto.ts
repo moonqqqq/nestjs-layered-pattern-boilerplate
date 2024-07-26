@@ -12,5 +12,5 @@ export class SetEmojiReactionBodyDto {
 
   @ApiProperty({ example: EMOJI_REACTION.CRYING, enum: EMOJI_REACTION })
   @IsEnum(EMOJI_REACTION)
-  type: TEMOJI_REACTION;
+  emojiType: TEMOJI_REACTION;
 }

@@ -11,13 +11,24 @@ export class EmojiReactionService {
 
   async setEmojiReaction(
     userId: string,
-    emojiReactionInput: { chatmessageId: string; type: TEMOJI_REACTION },
+    emojiReactionInput: { chatMessageId: string; type: TEMOJI_REACTION },
   ) {
-    const emojiReaction = new EmojiReaction({
-      userId,
-      type: emojiReactionInput.type,
-      chatMessageId: emojiReactionInput.chatmessageId,
-    });
+    let emojiReaction =
+      await this.emojiReactionRepository.findByChatMessageIdAndUserId(
+        emojiReactionInput.chatMessageId,
+        userId,
+      );
+
+    // if user already set emoji on same chatmessage, update
+    if (emojiReaction) {
+      emojiReaction.changeType(emojiReactionInput.type);
+    } else {
+      emojiReaction = new EmojiReaction({
+        userId,
+        type: emojiReactionInput.type,
+        chatMessageId: emojiReactionInput.chatMessageId,
+      });
+    }
 
     return await this.emojiReactionRepository.save(emojiReaction);
   }

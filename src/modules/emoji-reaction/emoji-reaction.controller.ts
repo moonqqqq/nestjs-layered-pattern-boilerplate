@@ -30,7 +30,7 @@ export class EmojiReactionController {
   @HttpCode(HttpStatus.OK)
   async setEmojiReaction(
     @ReqUser() currentUser: IUserPayload,
-    @Body() { chatMessageId, type }: SetEmojiReactionBodyDto,
+    @Body() { chatMessageId, emojiType }: SetEmojiReactionBodyDto,
   ) {
     await this.chatroomService.checkAuthOnChatroomByChatMessageId(
       chatMessageId,
@@ -38,8 +38,8 @@ export class EmojiReactionController {
     );
 
     await this.emojiReactionService.setEmojiReaction(currentUser.id, {
-      chatmessageId: currentUser.id,
-      type,
+      chatMessageId: chatMessageId,
+      type: emojiType,
     });
   }
 }

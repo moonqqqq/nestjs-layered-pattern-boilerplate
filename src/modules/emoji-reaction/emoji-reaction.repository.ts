@@ -26,13 +26,32 @@ export class EmojiReactionRepository {
     return EmojiReaction.fromEntity(emojiReactionEntity);
   }
 
+  async findByChatMessageIdAndUserId(
+    chatMessageId: string,
+    userId: string,
+  ): Promise<EmojiReaction> {
+    const emojiReactionEntity = await this.prisma.emojiReactionEntity.findFirst(
+      {
+        where: {
+          userId,
+          chatMessageId,
+        },
+        include: emojiReactionQueryIncludeStatement,
+      },
+    );
+
+    if (!emojiReactionEntity) return null;
+
+    return EmojiReaction.fromEntity(emojiReactionEntity);
+  }
+
   async save(emojiReaction: EmojiReaction) {
     const emojiReactionInput: Prisma.EmojiReactionEntityCreateInput = {
       userId: emojiReaction.userId,
       type: emojiReaction.type,
       chatMessage: {
         connect: {
-          id: emojiReaction.chatMessageId,
+          id: emojiReaction.getChatMessageId(),
         },
       },
     };
