@@ -10,6 +10,8 @@ import { ReferringChatMessage } from '../domains/referring-chat-message.domain';
 import { ReferringChatMessageResDto } from './referring-chat-message-res.dto';
 import { InputFile } from '../../upload/domains/file.domain';
 import { InputFileResDto } from '../../upload/dtos/input-file-res.dto';
+import { EmojiReaction } from '../../emoji-reaction/domains/emoji-reaction.domain';
+import { TEMOJI_REACTION } from '../../emoji-reaction/constants/emoji-reaction.constant';
 
 export class TextChatMessageResDto {
   @Exclude() private readonly _id: string;
@@ -20,6 +22,7 @@ export class TextChatMessageResDto {
   @Exclude() private readonly _taggedUserIds?: string[];
   @Exclude() private readonly _referringChatMessage?: ReferringChatMessage;
   @Exclude() private readonly _attachment?: InputFile;
+  @Exclude() private readonly _emojiReactions?: EmojiReaction[];
   @Exclude() private readonly _createdAt?: Date;
 
   constructor(chatMessage: TextChatMessage) {
@@ -31,6 +34,7 @@ export class TextChatMessageResDto {
     this._taggedUserIds = chatMessage.taggedUserIds;
     this._referringChatMessage = chatMessage.referringChatMessage;
     this._attachment = chatMessage.attachment;
+    this._emojiReactions = chatMessage.emojiReactions;
     this._createdAt = chatMessage.createdAt;
   }
 
@@ -83,6 +87,14 @@ export class TextChatMessageResDto {
   get attachment(): InputFileResDto {
     if (this._attachment) {
       return new InputFileResDto(this._attachment);
+    }
+  }
+
+  @ApiPropertyOptional({ example: { SMILE: 1 } })
+  @Expose()
+  get emojiReactionCounts(): Record<TEMOJI_REACTION, number> {
+    if (this._emojiReactions?.length > 0) {
+      return EmojiReaction.toCounts(this._emojiReactions);
     }
   }
 

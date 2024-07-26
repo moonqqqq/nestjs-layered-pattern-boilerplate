@@ -4,6 +4,7 @@ import { ChatMessage } from './chat-message.domain';
 import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
 import { ReferringChatMessage } from './referring-chat-message.domain';
 import { InputFile } from '../../upload/domains/file.domain';
+import { EmojiReaction } from '../../emoji-reaction/domains/emoji-reaction.domain';
 
 export class TextChatMessage extends ChatMessage {
   readonly content: string;
@@ -19,6 +20,7 @@ export class TextChatMessage extends ChatMessage {
     readonly taggedUserIds?: string[];
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
+    readonly emojiReactions?: EmojiReaction[];
   }) {
     const { content, ...baseChatMessage } = chatMessage;
     super(baseChatMessage);
@@ -46,6 +48,14 @@ export class TextChatMessage extends ChatMessage {
     if (chatMessage.attachment) {
       textChatMessage.setAttachment(
         InputFile.fromEntity(chatMessage.attachment),
+      );
+    }
+
+    if (chatMessage?.emojiReactions?.length > 0) {
+      textChatMessage.setEmojiReactions(
+        chatMessage.emojiReactions.map((emojiReaction) =>
+          EmojiReaction.fromEntity(emojiReaction),
+        ),
       );
     }
 

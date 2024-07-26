@@ -1,3 +1,4 @@
+import { EmojiReaction } from '../../emoji-reaction/domains/emoji-reaction.domain';
 import { InputFile } from '../../upload/domains/file.domain';
 import { User } from '../../user/domains/user.domain';
 import { TCHAT_MESSAGE_KIND } from '../constants/chat-message.constant';
@@ -9,8 +10,8 @@ export class ChatMessage {
   readonly type: TCHAT_MESSAGE_KIND;
   readonly user: User;
   referringChatMessage?: ReferringChatMessage;
+  emojiReactions?: EmojiReaction[];
   attachment?: InputFile;
-  //   readonly emojiReactions?: EmojiReaction[];
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
 
@@ -21,7 +22,7 @@ export class ChatMessage {
     readonly user: User;
     referringChatMessage?: ReferringChatMessage;
     attachment?: InputFile;
-    //   readonly emojiReactions?: EmojiReaction[];
+    readonly emojiReactions?: EmojiReaction[];
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
   }) {
@@ -30,7 +31,7 @@ export class ChatMessage {
     this.user = chatMessage.user;
     this.referringChatMessage = chatMessage.referringChatMessage;
     this.attachment = chatMessage.attachment;
-    // this.emojiReactions = chatMessage.emojiReactions
+    this.emojiReactions = chatMessage.emojiReactions;
     this.createdAt = chatMessage.createdAt;
     this.updatedAt = chatMessage.updatedAt;
   }
@@ -49,5 +50,9 @@ export class ChatMessage {
 
   setAttachment(attachment: InputFile) {
     this.attachment = attachment;
+  }
+
+  setEmojiReactions(emojiReactions: EmojiReaction[]) {
+    this.emojiReactions = emojiReactions;
   }
 }

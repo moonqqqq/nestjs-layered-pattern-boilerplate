@@ -38,4 +38,17 @@ export class EmojiReaction {
   changeType(type: EmojiReacitonType) {
     return (this.type = type);
   }
+
+  static toCounts(
+    emojiReactions: EmojiReaction[],
+  ): Record<TEMOJI_REACTION, number> {
+    return emojiReactions.reduce((acc, cur) => {
+      if (acc[cur.type]) {
+        acc[cur.type] += 1;
+      } else {
+        acc[cur.type] = 1;
+      }
+      return acc;
+    }, {}) as Record<TEMOJI_REACTION, number>;
+  }
 }

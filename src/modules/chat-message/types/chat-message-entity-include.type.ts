@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { userQueryIncludeStatement } from '../../user/types/user-entity-include.type';
 import { referringChatMessageQueryIncludeStatement } from './referring-chat-message-entity-include.type';
+import { emojiReactionQueryIncludeStatement } from '../../emoji-reaction/types/emoji-reaction-entity-include.type';
 
 export const chatMessageQueryIncludeStatement = {
   chatroom: true,
@@ -18,6 +19,7 @@ export const chatMessageQueryIncludeStatement = {
     include: referringChatMessageQueryIncludeStatement,
   },
   attachment: true,
+  emojiReactions: emojiReactionQueryIncludeStatement,
 } as const;
 
 export type TChatMessageQueryIncludeStatement =

@@ -4,6 +4,7 @@ import { ChatMessage } from './chat-message.domain';
 import { Sticker } from '../../sticker/domains/sticker.domain';
 import { TChatMessageQueryIncludeStatement } from '../types/chat-message-entity-include.type';
 import { ReferringChatMessage } from './referring-chat-message.domain';
+import { EmojiReaction } from '../../emoji-reaction/domains/emoji-reaction.domain';
 
 export class StickerChatMessage extends ChatMessage {
   readonly sticker: Sticker;
@@ -17,6 +18,7 @@ export class StickerChatMessage extends ChatMessage {
     // readonly referringChatMessage?: ReferringChatMessage;
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
+    readonly emojiReactions?: EmojiReaction[];
   }) {
     const { sticker, ...baseChatMessage } = chatMessage;
 
@@ -41,6 +43,13 @@ export class StickerChatMessage extends ChatMessage {
       stickerChatMessage.setReferringChatMessage(referringChatMessage);
     }
 
+    if (chatMessage?.emojiReactions?.length > 0) {
+      stickerChatMessage.setEmojiReactions(
+        chatMessage.emojiReactions.map((emojiReaction) =>
+          EmojiReaction.fromEntity(emojiReaction),
+        ),
+      );
+    }
     return stickerChatMessage;
   }
 
